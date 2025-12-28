@@ -1,0 +1,28 @@
+{
+  "es": {
+    "tech_sheet": "Hoja Técnica",
+    "order_not_found": "No se encontró la orden.",
+    "client_data": "Datos del Cliente",
+    "assigned_tailor": "Sastre Asignado",
+    "garment_type": "Tipo de Prenda",
+    "client_measurements": "Medidas del Cliente",
+    "selected_fabric": "Tela Seleccionada",
+    "suit_details": "Detalles del Traje",
+    "order_notes": "Notas del Pedido",
+    "current_status": "Estado Actual",
+    "delivery_date": "Fecha de Entrega",
+
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "email": "Email",
+    "shop": "Taller",
+
+    "no_measurements": "No hay medidas registradas.",
+    "no_details": "No hay detalles registrados.",
+    "no_notes": "Sin notas.",
+    "not_specified": "No especificado",
+    "not_selected": "No seleccionada",
+    "not_assigned": "No asignado",
+    "no_date": "Sin fecha"
+  }
+}

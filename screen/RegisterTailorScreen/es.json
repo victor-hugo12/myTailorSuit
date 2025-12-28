@@ -1,0 +1,22 @@
+{
+  "es": {
+    "title_tailor": "Registro de Sastre",
+    "name": "Nombre",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar Contraseña",
+    "shop": "Nombre del Taller",
+    "register_tailor": "Registrar Sastre",
+    "modal_title": "¡Usuario creado!",
+    "modal_message": "El registro se realizó correctamente.",
+    "modal_ok": "OK",
+    "error_name_required": "Nombre requerido",
+    "error_email_invalid": "Email inválido",
+    "error_email_required": "Email requerido",
+    "error_password_min": "La contraseña debe tener al menos 6 caracteres",
+    "error_password_required": "Contraseña requerida",
+    "error_confirm_match": "Las contraseñas deben coincidir",
+    "error_confirm_required": "Confirmación de contraseña requerida",
+    "error_shop_required": "Nombre del taller requerido"
+  }
+}

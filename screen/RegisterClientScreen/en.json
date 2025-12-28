@@ -1,0 +1,23 @@
+{
+  "en": {
+    "title": "Client Registration",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+
+    "register_client": "Register Client",
+
+    "modal_title": "User Created!",
+    "modal_message": "The registration was completed successfully.",
+    "modal_ok": "OK",
+
+    "error_name_required": "Name is required",
+    "error_email_invalid": "Invalid email",
+    "error_email_required": "Email is required",
+    "error_password_required": "Password is required",
+    "error_password_min": "Minimum 6 characters",
+    "error_confirm_required": "Confirmation required",
+    "error_confirm_match": "Passwords do not match"
+  }
+}

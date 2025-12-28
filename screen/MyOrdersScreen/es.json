@@ -1,0 +1,63 @@
+{
+  "es": {
+    "my_orders": "Mis Pedidos",
+    "no_orders": "No hay pedidos en esta categoría.",
+    "create_quote": "Crear Cotización",
+    "price": "Precio",
+    "time_days": "Tiempo (días)",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "accept_price": "Aceptar Precio",
+    "reject_price": "Rechazar Precio",
+    "save_local": "Guardar Localmente",
+    "save_cloud": "Guardar en la Nube",
+    "model_saved_local": "Modelo guardado localmente ✔",
+    "model_saved_cloud": "Modelo guardado en la nube ✔",
+    "no_preview_available": "No hay vista previa disponible",
+    "unnamed_model": "Modelo sin nombre",
+
+    "reject": "Rechazar",
+    "advance_to": "Avanzar a",
+    "save_model": "Guardar Modelo",
+
+    "saving": "Guardando...",
+    "view_technical_sheet": "Ver Hoja Técnica",
+    "accept_order": "Aceptar Pedido",
+    "reject_order": "Rechazar Pedido",
+    "start_production": "Iniciar Confección",
+    "control_quality": "Enviar a Control de Calidad",
+    "ready_to_ship": "Marcar Listo para Envío",
+    "mark_delivered": "Marcar Entregado",
+    "create_quote_btn": "Crear Cotización",
+    "quote_estimation": "Estimación del Sastre",
+    "price_label": "Precio",
+    "time_label": "Tiempo de entrega",
+    "notes": "Notas",
+
+    "send_quality_control": "Enviar a Control de Calidad",
+    "mark_ready_to_ship": "Marcar Listo para Envío",
+
+    "pay_deposit": "Pagar Anticipo",
+    "tailor_estimate": "Estimación del Sastre",
+    "delivery_time": "Tiempo de entrega",
+
+    "order": "Pedido",
+    "name": "Nombre",
+    "type": "Tipo",
+    "client": "Cliente",
+    "date": "Fecha",
+    "cannot_save": "No se puede guardar el modelo",
+
+    "saved": "Guardado",
+
+    "error": "Error",
+    "could_not_save_model": "No se pudo guardar el modelo",
+
+    "all": "Todos",
+    "pending": "Pendientes",
+    "quote_pending": "Cotización Pendiente",
+    "in_process": "En Proceso",
+    "finalized": "Finalizados",
+    "canceled": "Cancelados"
+  }
+}

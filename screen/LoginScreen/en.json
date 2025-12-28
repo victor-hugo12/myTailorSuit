@@ -1,0 +1,15 @@
+{
+  "en": {
+    "title_login": "Login",
+    "email": "Email",
+    "password": "Password",
+    "button_login": "Sign In",
+    "no_account": "Don't have an account? Register as:",
+    "register_client": "Client",
+    "register_tailor": "Tailor",
+
+    "invalid_email": "Invalid email",
+    "required_email": "Email is required",
+    "required_password": "Password is required"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "es": {
+    "title_login": "Iniciar Sesión",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "button_login": "Ingresar",
+    "no_account": "¿No tienes cuenta? Regístrate como:",
+    "register_client": "Cliente",
+    "register_tailor": "Sastre",
+
+    "invalid_email": "Email inválido",
+    "required_email": "Email requerido",
+    "required_password": "Contraseña requerida"
+  }
+}

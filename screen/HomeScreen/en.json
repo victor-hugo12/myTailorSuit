@@ -1,0 +1,14 @@
+{
+  "en": {
+    "choose_garment": "Choose Garment",
+    "design_garment": "Design Garment",
+    "edit_garment": "Edit garment",
+    "recents": "Recents",
+    "recommended": "Recommended",
+    "no_recents": "No recents",
+    "no_recommended": "No recommended",
+    "pants": "Pants",
+    "vest": "Vest",
+    "coat": "Coat"
+  }
+}

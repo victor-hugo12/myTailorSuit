@@ -1,0 +1,40 @@
+{
+  "en": {
+    "create_order": "Create Order",
+    "send_order": "Send Order",
+
+    "error": "Error",
+    "no_suit_selected": "No suit selected.",
+    "login_required": "You must be logged in.",
+    "select_tailor": "You must select a tailor.",
+    "fill_client_info": "Please complete the client information.",
+    "invalid_date": "Invalid date",
+    "deadline_too_close": "The date must be at least {{hours}} hours from now.",
+    "no_preview_image": "There is no preview image available to create the order.",
+
+    "order_sent": "✔ Order Sent",
+    "order_sent_msg": "The tailor will receive your request.",
+
+    "order_create_error": "There was a problem creating the order.",
+    "suit_not_found": "The selected suit was not found.",
+    "order_client_data": "Client Information",
+    "full_name": "Full name",
+    "phone": "Phone",
+    "optional_notes": "Optional notes",
+    "placeholder_name": "Your name",
+    "placeholder_phone": "Contact number",
+    "placeholder_notes": "Additional comments…",
+
+    "no_image": "No image",
+    "garment": "Garment",
+    "fabric": "Fabric",
+    "estimated_price": "Estimated price",
+    "view_details": "View suit details",
+    "measurements": "Measurements",
+    "technical_details": "Technical details",
+
+    "choose_tailor": "Choose a tailor",
+    "search": "Search…",
+    "close": "Close"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "en": {
+    "login_required": "Login required",
+    "must_login_to_save_cloud": "You must login to save to the cloud.",
+    "saved": "Saved",
+    "saved_in_cloud": "Design saved in cloud.",
+    "saved_locally": "Design saved locally.",
+    "error": "Error",
+    "could_not_save_cloud": "Could not save to cloud.",
+    "could_not_save_local": "Could not save locally.",
+    "delete_suit": "Delete design",
+    "confirm_delete_local": "Are you sure you want to delete this local design?",
+    "confirm_delete_cloud": "Are you sure you want to delete this cloud design?",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "my_designs": "My Designs",
+    "local": "Local",
+    "cloud": "Cloud",
+    "login_to_view_cloud": "Login to view cloud designs",
+    "local_designs": "Local Designs",
+    "cloud_designs": "Cloud Designs",
+    "preview": "Preview",
+    "save_to_cloud": "Save to Cloud",
+    "save_to_local": "Save to Local",
+    "image_load_error": "Error loading image",
+    "reload": "Reload",
+    "refresh": "Refresh"
+  }
+}

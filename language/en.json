@@ -1,0 +1,29 @@
+{
+  "en": {
+    "Save": "Save",
+    "Cancel": "Cancel",
+    "Search": "Search",
+    "Create": "Create",
+    "Home": "Home",
+    "Orders": "Orders",
+    "Settings": "Settings",
+    "Profile": "Profile",
+    "Logout": "Logout",
+    "Next": "Next",
+    "Error": "Error",
+    "Theme": "Theme",
+    "Language": "Language",
+    "English": "English",
+    "Spanish": "Spanish",
+    "Pants": "Pants",
+    "Vest": "Vest",
+    "Coat": "Coat",
+    "S": "S",
+    "M": "M",
+    "L": "L",
+    "XL": "XL",
+    "is required": "is required",
+    "at least %{value} cm": "at least %{value} cm",
+    "max %{value} cm": "max %{value} cm"
+  }
+}

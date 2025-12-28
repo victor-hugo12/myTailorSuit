@@ -1,0 +1,63 @@
+{
+  "en": {
+    "my_orders": "My Orders",
+    "no_orders": "No orders in this category.",
+    "create_quote": "Create Quote",
+    "price": "Price",
+    "time_days": "Time (days)",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "accept_price": "Accept Price",
+    "reject_price": "Reject Price",
+    "save_local": "Save Locally",
+    "save_cloud": "Save to Cloud",
+    "model_saved_local": "Model saved locally ✔",
+    "model_saved_cloud": "Model saved to cloud ✔",
+    "no_preview_available": "No preview available",
+    "unnamed_model": "Unnamed Model",
+
+    "reject": "Reject",
+    "advance_to": "Advance to",
+    "save_model": "Save Model",
+
+    "saving": "Saving...",
+    "view_technical_sheet": "View Technical Sheet",
+    "accept_order": "Accept Order",
+    "reject_order": "Reject Order",
+    "start_production": "Start Production",
+    "control_quality": "Send to Quality Control",
+    "ready_to_ship": "Mark Ready to Ship",
+    "mark_delivered": "Mark Delivered",
+    "create_quote_btn": "Create Quote",
+    "quote_estimation": "Tailor's Estimation",
+    "price_label": "Price",
+    "time_label": "Delivery Time",
+    "notes": "Notes",
+
+    "send_quality_control": "Send to Quality Control",
+    "mark_ready_to_ship": "Mark Ready to Ship",
+
+    "pay_deposit": "Pay Deposit",
+    "tailor_estimate": "Tailor's Estimation",
+    "delivery_time": "Delivery Time",
+
+    "order": "Order",
+    "name": "Name",
+    "type": "Type",
+    "client": "Client",
+    "date": "Date",
+    "cannot_save": "Cannot Save Model",
+
+    "saved": "Saved",
+
+    "error": "Error",
+    "could_not_save_model": "Could not save the model",
+
+    "all": "All",
+    "pending": "Pending",
+    "quote_pending": "Quote Pending",
+    "in_process": "In Process",
+    "finalized": "Finalized",
+    "canceled": "Canceled"
+  }
+}

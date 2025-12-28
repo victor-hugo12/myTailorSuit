@@ -1,0 +1,23 @@
+{
+  "es": {
+    "title": "Registro Cliente",
+    "name": "Nombre",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar contraseña",
+
+    "register_client": "Registrar Cliente",
+
+    "modal_title": "¡Usuario creado!",
+    "modal_message": "El registro se realizó correctamente.",
+    "modal_ok": "OK",
+
+    "error_name_required": "Nombre requerido",
+    "error_email_invalid": "Email inválido",
+    "error_email_required": "Email requerido",
+    "error_password_required": "Contraseña requerida",
+    "error_password_min": "Mínimo 6 caracteres",
+    "error_confirm_required": "Confirmación requerida",
+    "error_confirm_match": "Las contraseñas no coinciden"
+  }
+}

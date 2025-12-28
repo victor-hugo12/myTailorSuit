@@ -1,0 +1,38 @@
+export default {
+  expo: {
+    name: "myTailorSuit",
+    slug: "myTailorSuit",
+    version: "1.0.0",
+    orientation: "portrait",
+    icon: "./assets/icon.png",
+    userInterfaceStyle: "light",
+    newArchEnabled: true,
+    scheme: "mytailorsuit",
+
+    splash: {
+      image: "./assets/splash-icon.png",
+      resizeMode: "contain",
+      backgroundColor: "#ffffff",
+    },
+
+    ios: {
+      supportsTablet: true,
+    },
+
+    android: {
+      package: "com.victorhugo911.myTailorSuit",
+      adaptiveIcon: {
+        foregroundImage: "./assets/adaptive-icon.png",
+        backgroundColor: "#ffffff",
+      },
+      edgeToEdgeEnabled: true,
+      predictiveBackGestureEnabled: false,
+    },
+
+    web: {
+      favicon: "./assets/favicon.png",
+    },
+
+    plugins: ["expo-router"], // mantiene esto tal cual
+  },
+};

@@ -1,0 +1,29 @@
+{
+  "es": {
+    "login_required": "Inicia sesión",
+    "must_login_to_save_cloud": "Debes iniciar sesión para guardar en la nube.",
+    "saved": "Guardado",
+    "saved_in_cloud": "Diseño guardado en la nube.",
+    "saved_locally": "Diseño guardado localmente.",
+    "error": "Error",
+    "could_not_save_cloud": "No se pudo guardar en la nube.",
+    "could_not_save_local": "No se pudo guardar localmente.",
+    "delete_suit": "Eliminar diseño",
+    "confirm_delete_local": "¿Estás seguro de que deseas eliminar este diseño local?",
+    "confirm_delete_cloud": "¿Estás seguro de que deseas eliminar este diseño de la nube?",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "my_designs": "Mis Diseños",
+    "local": "Locales",
+    "cloud": "Nube",
+    "login_to_view_cloud": "Inicia sesión para ver los diseños en la nube",
+    "local_designs": "Diseños Locales",
+    "cloud_designs": "Diseños en la Nube",
+    "preview": "PREVIEW",
+    "save_to_cloud": "Guardar en la Nube",
+    "save_to_local": "Guardar Local",
+    "image_load_error": "Error al cargar la imagen",
+    "reload": "Recargar",
+    "refresh": "Actualizar"
+  }
+}

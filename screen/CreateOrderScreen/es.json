@@ -1,0 +1,40 @@
+{
+  "es": {
+    "create_order": "Crear Pedido",
+    "send_order": "Enviar Pedido",
+
+    "error": "Error",
+    "no_suit_selected": "No hay traje seleccionado.",
+    "login_required": "Debes iniciar sesión.",
+    "select_tailor": "Debes seleccionar un sastre.",
+    "fill_client_info": "Completa los datos del cliente.",
+    "invalid_date": "Fecha inválida",
+    "deadline_too_close": "La fecha debe ser al menos {{hours}} horas desde ahora.",
+    "no_preview_image": "No hay imagen disponible para crear la vista previa del pedido.",
+
+    "order_sent": "✔ Pedido enviado",
+    "order_sent_msg": "El sastre recibirá tu solicitud.",
+
+    "order_create_error": "Hubo un problema al crear el pedido.",
+    "suit_not_found": "No se encontró el traje seleccionado.",
+    "order_client_data": "Datos del Cliente",
+    "full_name": "Nombre completo",
+    "phone": "Teléfono",
+    "optional_notes": "Notas opcionales",
+    "placeholder_name": "Tu nombre",
+    "placeholder_phone": "Número de contacto",
+    "placeholder_notes": "Comentarios adicionales…",
+    "delivery_date": "Fecha estimada de entrega",
+
+    "no_image": "Sin imagen",
+    "garment": "Prenda",
+    "fabric": "Tela",
+    "estimated_price": "Precio estimado",
+    "view_details": "Ver detalles del traje",
+    "measurements": "Medidas",
+    "technical_details": "Detalles técnicos",
+    "choose_tailor": "Elegir sastre",
+    "search": "Buscar…",
+    "close": "Cerrar"
+  }
+}

@@ -1,0 +1,65 @@
+# ================================
+# Dependencies
+# ================================
+node_modules/
+
+# ================================
+# Expo
+# ================================
+.expo/
+.expo-shared/
+dist/
+web-build/
+
+# ================================
+# Environment variables
+# ================================
+.env
+.env.*
+.env*.local
+
+# ================================
+# Firebase (CRÍTICO – NO SUBIR)
+# ================================
+google-services.json
+GoogleService-Info.plist
+
+# ================================
+# Android / iOS
+# ================================
+android/
+ios/
+.kotlin/
+*.orig.*
+
+# Keystores & certificates
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.pem
+
+# ================================
+# Metro / Debug
+# ================================
+.metro-health-check*
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# ================================
+# TypeScript
+# ================================
+*.tsbuildinfo
+
+# ================================
+# macOS / Windows
+# ================================
+.DS_Store
+Thumbs.db
+
+# ================================
+# Expo CLI generated
+# ================================
+# @generated expo-cli

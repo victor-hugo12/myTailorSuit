@@ -1,0 +1,28 @@
+{
+  "en": {
+    "tech_sheet": "Tech Sheet",
+    "order_not_found": "Order not found.",
+    "client_data": "Client Data",
+    "assigned_tailor": "Assigned Tailor",
+    "garment_type": "Garment Type",
+    "client_measurements": "Client Measurements",
+    "selected_fabric": "Selected Fabric",
+    "suit_details": "Suit Details",
+    "order_notes": "Order Notes",
+    "current_status": "Current Status",
+    "delivery_date": "Delivery Date",
+
+    "name": "Name",
+    "phone": "Phone",
+    "email": "Email",
+    "shop": "Shop",
+
+    "no_measurements": "No measurements available.",
+    "no_details": "No details registered.",
+    "no_notes": "No notes.",
+    "not_specified": "Not specified",
+    "not_selected": "Not selected",
+    "not_assigned": "Not assigned",
+    "no_date": "No date"
+  }
+}
