@@ -1,0 +1,12 @@
+{
+  "es": {
+    "settings": "Configuración",
+    "language": "Idioma",
+    "theme": "Tema",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "logoutConfirmTitle": "Confirmar",
+    "logoutConfirmMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "cancel": "Cancelar"
+  }
+}

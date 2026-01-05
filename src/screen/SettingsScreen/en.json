@@ -1,0 +1,12 @@
+{
+  "en": {
+    "settings": "Settings",
+    "language": "Language",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "logoutConfirmTitle": "Confirm",
+    "logoutConfirmMessage": "Are you sure you want to log out?",
+    "cancel": "Cancel"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "en": {
+    "suit_name_modal": {
+      "title": "Suit Name",
+      "placeholder": "Enter a name",
+      "save_in": "Save in:",
+      "local": "Local",
+      "cloud": "Cloud",
+      "save": "Save",
+      "cancel": "Cancel",
+      "saved_check": "Saved!",
+      "error_empty_name": "Name cannot be empty",
+      "error_saving": "Failed to save",
+      "save_changes": "save changes",
+      "copy_cloud": "copy cloud",
+      "copy_local": "Copy local"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "es": {
+    "suit_name_modal": {
+      "title": "Nombre del traje",
+      "placeholder": "Ingresa un nombre",
+      "save_in": "Guardar en:",
+      "local": "Local",
+      "cloud": "Nube",
+      "save": "Guardar",
+      "cancel": "Cancelar",
+      "saved_check": "¡Guardado!",
+      "error_empty_name": "El nombre no puede estar vacío",
+      "error_saving": "Error al guardar",
+      "save_changes": "Guardar cambios",
+      "copy_cloud": "Copia en nube",
+      "copy_local": "Copia local"
+    }
+  }
+}
