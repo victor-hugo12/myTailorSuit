@@ -120,7 +120,15 @@ const FabricsFilterPanel: React.FC<FabricsFilterPanelProps> = ({
                 ]}
                 onPress={() => toggleComposition(item)}
               >
-                <Text style={styles.compositionText}>{item}</Text>
+                <Text
+                  style={[
+                    styles.compositionText,
+                    activeCompositions.includes(item) &&
+                      styles.activeCompositionText,
+                  ]}
+                >
+                  {i18n.t(item)}
+                </Text>
               </TouchableOpacity>
             )}
           />
@@ -193,5 +201,8 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       backgroundColor: isDark ? "#4F46E5" : "#0B214A",
     },
     compositionText: { color: isDark ? "#E0E0E0" : "#000" },
+    activeCompositionText: {
+      color: "#fff", // 🔥 SIEMPRE blanco cuando está seleccionado
+    },
   });
 };

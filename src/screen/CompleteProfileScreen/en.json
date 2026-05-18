@@ -1,0 +1,14 @@
+{
+  "en": {
+    "complete_profile": "Complete profile",
+    "user_type": "User type",
+    "client": "Client",
+    "tailor": "Tailor",
+    "shop_name": "Shop name",
+    "save_profile": "Save profile",
+    "error": "Error",
+    "unauthenticated_user": "User not authenticated",
+    "shop_required": "Enter the shop name",
+    "profile_save_error": "Could not save profile"
+  }
+}

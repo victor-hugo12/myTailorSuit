@@ -7,6 +7,7 @@
     "dark": "Dark",
     "logoutConfirmTitle": "Confirm",
     "logoutConfirmMessage": "Are you sure you want to log out?",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "login": "Login"
   }
 }

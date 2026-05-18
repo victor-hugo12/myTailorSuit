@@ -65,7 +65,7 @@ export default function HomeScreen() {
         <Preview
           garment={garment}
           measurements={Object.fromEntries(
-            Object.entries(measurements).map(([k, v]) => [k, Number(v)])
+            Object.entries(measurements).map(([k, v]) => [k, Number(v)]),
           )}
           selectedOptions={selectedOptions}
           selectedFabric={
@@ -98,7 +98,7 @@ export default function HomeScreen() {
             }
             renderLabel={(label) => {
               const option = GARMENT_OPTIONS.find(
-                (g) => String(g.id) === label
+                (g) => String(g.id) === label,
               );
               return <Text>{option ? i18n.t(option.label) : label}</Text>;
             }}

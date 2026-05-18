@@ -1,0 +1,10 @@
+{
+  "es": {
+    "title": "Mi perfil",
+    "email": "Correo electrónico",
+    "role": "Rol",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "user": "Usuario"
+  }
+}

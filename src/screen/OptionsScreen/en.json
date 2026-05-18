@@ -184,6 +184,20 @@
     "saved_successfully": "Saved successfully",
     "save_changes": "save changes",
     "copy_cloud": "copy cloud",
-    "copy_local": "Copy local"
+    "copy_local": "Copy local",
+
+    "wool": "Wool",
+    "recycledfibers": "Recycled fibers",
+    "linen-cotton": "Linen - Cotton",
+    "linen-blends": "Linen blends",
+    "linen": "Linen",
+    "cotton-linen": "Cotton - Linen",
+    "cotton": "Cotton",
+    "cotton-blends": "Cotton blends",
+    "polyester-rayon": "Polyester - Rayon",
+    "wool-blends": "Wool blends",
+    "pure-wool": "Pure wool",
+    "merino-wool": "Merino wool",
+    "polyester": "Polyester"
   }
 }

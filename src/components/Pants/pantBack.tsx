@@ -27,14 +27,14 @@ export const PantsBack: React.FC<PantsBackProps> = ({
   length,
   inseam,
   selectedOptions = {},
-  fillColor = "#B0BEC5",
-  strokeColor = "#263238",
+  fillColor = "#fff",
+  strokeColor = "#111",
   useTexture = true,
   selectedFabric,
 }) => {
   const paths = getPantPaths(
     { waist, thigh, knee, boot, length, inseam },
-    selectedOptions
+    selectedOptions,
   );
 
   const buttonRightPos = paths.FLYCOORDS?.derecho || { x: 0, y: 0 };
@@ -52,7 +52,6 @@ export const PantsBack: React.FC<PantsBackProps> = ({
       height="100%"
       viewBox="0 0 500 600"
       preserveAspectRatio="xMidYMid meet"
-      style={{ backgroundColor: "#f8f8f8" }}
     >
       <Defs>
         <Textures selectedFabric={selectedFabric} />

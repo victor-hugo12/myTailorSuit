@@ -5,10 +5,17 @@ import React, {
   useImperativeHandle,
   useRef,
 } from "react";
-import { View, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Dimensions } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { captureRef } from "react-native-view-shot";
 import * as FileSystem from "expo-file-system";
+
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 
 import { PantsBack } from "@/components/Pants/pantBack";
 import { Pants } from "@/components/Pants";
@@ -25,8 +32,13 @@ interface PreviewProps {
   selectedFabric?: { name: string };
   forceBackView?: boolean;
   onToggleView?: () => void;
-  onCapture?: (uri: string) => void; // callback para enviar la imagen
+  onCapture?: (uri: string) => void;
 }
+
+const { width: screenWidth } = Dimensions.get("window");
+
+const PREVIEW_WIDTH = Math.min(screenWidth * 0.95, 500);
+const PREVIEW_HEIGHT = PREVIEW_WIDTH * 1.5;
 
 const Preview = forwardRef<View, PreviewProps>((props, ref) => {
   const {
@@ -40,7 +52,6 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
   } = props;
 
   const [internalBackView, setInternalBackView] = useState(false);
-
   const containerRef = useRef<View>(null);
 
   useImperativeHandle(ref, () => {
@@ -52,13 +63,90 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
   const isBackView =
     forceBackView !== undefined ? forceBackView : internalBackView;
 
-  const svgWidth = 400;
-  const svgHeight = 600;
+  const svgWidth = PREVIEW_WIDTH;
+  const svgHeight = PREVIEW_HEIGHT;
+
+  const scale = useSharedValue(1);
+  const savedScale = useSharedValue(1);
+
+  const translateX = useSharedValue(0);
+  const translateY = useSharedValue(0);
+
+  // 🔥 PINCH (zoom)
+  const pinchGesture = Gesture.Pinch()
+    .onUpdate((e) => {
+      let newScale = savedScale.value * e.scale;
+      newScale = Math.max(1, Math.min(newScale, 3));
+      scale.value = newScale;
+    })
+    .onEnd(() => {
+      savedScale.value = scale.value;
+    });
+
+  // 🔥 PAN (mover cuando hay zoom)
+  const startX = useSharedValue(0);
+  const startY = useSharedValue(0);
+
+  const panGesture = Gesture.Pan()
+    .onStart(() => {
+      // 📌 guardar posición actual al iniciar el gesto
+      startX.value = translateX.value;
+      startY.value = translateY.value;
+    })
+    .onUpdate((e) => {
+      if (scale.value <= 1) return;
+
+      const maxTranslateX = (svgWidth * (scale.value - 1)) / 2;
+      const maxTranslateY = (svgHeight * (scale.value - 1)) / 2;
+
+      // 🔥 ahora sí acumulas correctamente
+      let newX = startX.value + e.translationX;
+      let newY = startY.value + e.translationY;
+
+      // 🔒 límites
+      newX = Math.max(-maxTranslateX, Math.min(newX, maxTranslateX));
+      newY = Math.max(-maxTranslateY, Math.min(newY, maxTranslateY));
+
+      translateX.value = newX;
+      translateY.value = newY;
+    });
+  // 🔥 DOBLE TAP (toggle zoom)
+  const doubleTapGesture = Gesture.Tap()
+    .numberOfTaps(2)
+    .onEnd(() => {
+      if (scale.value > 1) {
+        // RESET
+        scale.value = withTiming(1);
+        savedScale.value = 1;
+
+        translateX.value = withTiming(0);
+        translateY.value = withTiming(0);
+      } else {
+        // ZOOM IN
+        scale.value = withTiming(2);
+        savedScale.value = 2;
+      }
+    });
+
+  // 🔥 COMBINACIÓN DE GESTOS
+  const composed = Gesture.Exclusive(
+    doubleTapGesture,
+    Gesture.Simultaneous(pinchGesture, panGesture),
+  );
+
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [
+        { translateX: translateX.value },
+        { translateY: translateY.value },
+        { scale: scale.value },
+      ],
+    };
+  });
 
   let content: React.ReactNode = null;
 
   if (garment === "pants") {
-    const optionsWithFlyType = { ...selectedOptions };
     content = isBackView ? (
       <PantsBack
         waist={measurements.waist || 80}
@@ -68,7 +156,7 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
         length={measurements.length || 100}
         inseam={measurements.inseam || 75}
         selectedFabric={selectedFabric}
-        selectedOptions={optionsWithFlyType}
+        selectedOptions={selectedOptions}
       />
     ) : (
       <Pants
@@ -79,7 +167,7 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
         length={measurements.length || 100}
         inseam={measurements.inseam || 75}
         selectedFabric={selectedFabric}
-        selectedOptions={optionsWithFlyType}
+        selectedOptions={selectedOptions}
       />
     );
   } else if (garment === "vest") {
@@ -131,7 +219,6 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
     else setInternalBackView((prev) => !prev);
   };
 
-  // 🔹 Captura la imagen solo si la ref existe
   useEffect(() => {
     if (!containerRef.current || !onCapture) return;
 
@@ -148,32 +235,35 @@ const Preview = forwardRef<View, PreviewProps>((props, ref) => {
         console.error("Error capturando preview:", err);
       }
     };
+
     captureImage();
   }, [content, onCapture]);
 
   return (
-    <View style={styles.container} ref={containerRef}>
+    <View
+      style={[
+        styles.container,
+        { width: PREVIEW_WIDTH, height: PREVIEW_HEIGHT },
+      ]}
+      ref={containerRef}
+    >
       <Textures key={fabricKey} selectedFabric={selectedFabric} />
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator
-        nestedScrollEnabled
-        contentContainerStyle={{ flexGrow: 1 }}
-      >
-        <ScrollView
-          showsVerticalScrollIndicator
-          nestedScrollEnabled
-          contentContainerStyle={{
-            width: svgWidth,
-            height: svgHeight,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
+      <GestureDetector gesture={composed}>
+        <Animated.View
+          style={[
+            {
+              width: svgWidth,
+              height: svgHeight,
+              alignItems: "center",
+              justifyContent: "center",
+            },
+            animatedStyle,
+          ]}
         >
           {content}
-        </ScrollView>
-      </ScrollView>
+        </Animated.View>
+      </GestureDetector>
 
       <TouchableOpacity style={styles.toggleButton} onPress={handleToggle}>
         <MaterialCommunityIcons name="autorenew" size={28} color="#000" />
@@ -186,8 +276,6 @@ export default Preview;
 
 const styles = StyleSheet.create({
   container: {
-    width: 400,
-    height: 600,
     borderWidth: 4,
     borderColor: "#000",
     borderRadius: 8,
@@ -199,7 +287,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 10,
     right: 10,
-    backgroundColor: "rgba(255,255,255,0.8)",
+    backgroundColor: "#fff",
     padding: 6,
     borderRadius: 8,
     zIndex: 10,

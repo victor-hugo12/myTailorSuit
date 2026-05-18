@@ -2,7 +2,11 @@
   "es": {
     "choose_garment": "Elegir Prenda",
     "login": "Iniciar Sesión",
-    "logout": "Cerrar Sesión",
-    "edit_garment": "Editar Prenda"
+    "edit_garment": "Editar Prenda",
+    "profile": "Mi perfil",
+    "settings": "Configuración",
+    "logout": "Cerrar sesión",
+    "user": "Usuario",
+    "client": "cliente"
   }
 }

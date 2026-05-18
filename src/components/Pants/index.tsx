@@ -27,14 +27,14 @@ export const Pants: React.FC<PantsProps> = ({
   length,
   inseam,
   selectedOptions = {},
-  fillColor = "#B0BEC5",
-  strokeColor = "#263238",
+  fillColor = "#fff",
+  strokeColor = "#111",
   useTexture = true,
   selectedFabric,
 }) => {
   const paths = getPantPaths(
     { waist, thigh, knee, boot, length, inseam },
-    selectedOptions
+    selectedOptions,
   );
 
   const buttonPos = paths.FLYCOORDSCIERRE?.cierre || { x: 0, y: 0 };
@@ -51,7 +51,6 @@ export const Pants: React.FC<PantsProps> = ({
       height="100%"
       viewBox="0 0 500 600"
       preserveAspectRatio="xMidYMid meet"
-      style={{ backgroundColor: "#f8f8f8" }}
     >
       <Defs>
         <Textures selectedFabric={selectedFabric} />
@@ -61,7 +60,7 @@ export const Pants: React.FC<PantsProps> = ({
       <Path
         d={paths.PIERNASUPERIORIZQUIERDA}
         fill={fill}
-        stroke="#000"
+        stroke="none"
         strokeWidth={0.5}
         strokeOpacity={0.2}
       />
@@ -129,7 +128,7 @@ export const Pants: React.FC<PantsProps> = ({
       <Path
         d={paths.PIERNASUPERIORDERECHA}
         fill={fill}
-        stroke="#000"
+        stroke="none"
         strokeWidth={0.5}
         strokeOpacity={0.4}
       />
@@ -141,18 +140,18 @@ export const Pants: React.FC<PantsProps> = ({
       />
       <Path
         d={paths.CINTURADERECHA}
+        fill="url(#sombraDerecha)"
+        transform="translate(0, 4)"
+        opacity={0.4}
+      />
+      <Path
+        d={paths.CINTURADERECHA}
         fill={fill}
         stroke="#000"
         strokeWidth={0.5}
         strokeOpacity={0.5}
       />
 
-      <Path
-        d={paths.CINTURADERECHA}
-        fill="url(#sombraDerecha)"
-        transform="translate(0, 4)"
-        opacity={0.4}
-      />
       <Path
         d={paths.PASADORDERECHO}
         fill={fill2}
@@ -184,7 +183,7 @@ export const Pants: React.FC<PantsProps> = ({
       <Path
         d={paths.ZIPPER}
         fill={fill2}
-        stroke="black"
+        stroke="#000"
         strokeWidth={0.5}
         strokeOpacity={0.5}
       />

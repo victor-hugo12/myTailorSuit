@@ -7,6 +7,7 @@
     "dark": "Oscuro",
     "logoutConfirmTitle": "Confirmar",
     "logoutConfirmMessage": "¿Estás seguro de que deseas cerrar sesión?",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "login": "Iniciar Sesión"
   }
 }

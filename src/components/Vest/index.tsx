@@ -23,13 +23,12 @@ const Vest: React.FC<VestProps> = ({
   waist,
   shoulderWidth,
   selectedOptions = {},
-  fillColor = "#B0BEC5",
-  strokeColor = "#263238",
+
   selectedFabric,
 }) => {
   const paths = getVestPaths(
     { vestLength, chest, waist, shoulderWidth },
-    selectedOptions
+    selectedOptions,
   );
 
   const liningId = selectedOptions["Lining"];

@@ -16,7 +16,6 @@ import es from "../es.json";
 import MeasurementInstructionsModal from "./MeasurementInstructionsModal";
 i18n.store(en);
 i18n.store(es);
-
 interface MeasurementsPanelProps {
   garmentType: "pants" | "vest" | "coat";
   localMeasurements: Record<string, string>;
@@ -40,8 +39,7 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
   const garmentSizes = Object.keys(defaultSizes[garmentType]);
   const measurementEntries = Object.entries(localMeasurements);
   const dynamicStyles = getDynamicStyles(theme);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [tempValues, setTempValues] =
     useState<Record<string, string>>(localMeasurements);
@@ -70,7 +68,7 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
       garmentType,
       field,
       nextValue,
-      localMeasurements
+      localMeasurements,
     );
 
     if (!validation.isValid) {
@@ -118,35 +116,34 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
 
     const imagesMap: Record<string, any[]> = {
       vestLength: [
-        require("assets/instructions/lenghtCoat1.png"),
-        require("assets/instructions/lenghtCoat2.png"),
+        require("../../../../assets/instructions/lenghtCoat1.png"),
+        require("../../../../assets/instructions/lenghtCoat2.png"),
       ],
       shoulderWidth: [
-        require("assets/instructions/ShoulderCoatVest1.png"),
-        require("assets/instructions/ShoulderCoatVest2.png"),
+        require("../../../../assets/instructions/ShoulderCoatVest1.png"),
+        require("../../../../assets/instructions/ShoulderCoatVest2.png"),
       ],
-      chest: [require("assets/instructions/ChestCoatVest.png")],
-      waist: [require("assets/instructions/waistPants.png")],
-      thigh: [require("assets/instructions/thighPants.png")],
-      knee: [require("assets/instructions/kneePants.png")],
-      boot: [require("assets/instructions/hemPants.png")],
+      chest: [require("../../../../assets/instructions/ChestCoatVest.png")],
+      waist: [require("../../../../assets/instructions/waistPants.png")],
+      thigh: [require("../../../../assets/instructions/thighPants.png")],
+      knee: [require("../../../../assets/instructions/kneePants.png")],
+      boot: [require("../../../../assets/instructions/hemPants.png")],
       sleeveLength: [
-        require("assets/instructions/ArmCoatVest1.png"),
-        require("assets/instructions/ArmCoatVest2.png"),
-        require("assets/instructions/ArmCoatVest3.png"),
+        require("../../../../assets/instructions/ArmCoatVest1.png"),
+        require("../../../../assets/instructions/ArmCoatVest2.png"),
+        require("../../../../assets/instructions/ArmCoatVest3.png"),
       ],
       length: [
-        require("assets/instructions/lenghtPants1.png"),
-        require("assets/instructions/lenghtPants2.png"),
-        require("assets/instructions/lenghtPants3.png"),
+        require("../../../../assets/instructions/lenghtPants1.png"),
+        require("../../../../assets/instructions/lenghtPants2.png"),
+        require("../../../../assets/instructions/lenghtPants3.png"),
       ],
       inseam: [
-        require("assets/instructions/shotPants1.png"),
-        require("assets/instructions/shotPants2.png"),
-        require("assets/instructions/shotPants3.png"),
+        require("../../../../assets/instructions/shotPants1.png"),
+        require("../../../../assets/instructions/shotPants2.png"),
+        require("../../../../assets/instructions/shotPants3.png"),
       ],
     };
-
     setModalData({
       title: instruction.title,
       steps: instruction.steps,
@@ -202,10 +199,9 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
 
         {/* INPUTS */}
         <View style={dynamicStyles.inputsWrapper}>
-          {measurementEntries.map(([key, value]) => (
+          {measurementEntries.map(([key]) => (
             <View key={key} style={dynamicStyles.inputGroup}>
               <Text style={dynamicStyles.inputLabel}>{i18n.t(key)}</Text>
-
               <View style={dynamicStyles.inputRow}>
                 <TouchableOpacity
                   style={dynamicStyles.adjustButton}
@@ -229,7 +225,6 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
                     onEndEditing={(e) =>
                       finalizeMeasurement(key, e.nativeEvent.text)
                     }
-                    placeholderTextColor={theme === "dark" ? "#888" : "#999"}
                   />
                   <TouchableOpacity
                     onPress={() => showInstructions(key)}
@@ -300,16 +295,26 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       paddingHorizontal: 14,
       borderRadius: 8,
       borderWidth: 1,
-      borderColor: "#ccc",
+      borderColor: isDark ? "#444" : "#ccc",
       marginRight: 10,
-      backgroundColor: "#F3F4F6",
+      backgroundColor: isDark ? "#1E1E1E" : "#F3F4F6",
     },
+
     radioButtonActiveHorizontal: {
-      backgroundColor: "#E0E7FF",
-      borderColor: "#0B214A",
+      backgroundColor: isDark ? "#2563EB" : "#E0E7FF",
+      borderColor: isDark ? "#3B82F6" : "#0B214A",
     },
-    radioLabel: { fontSize: 15, color: "#333", fontWeight: "500" },
-    radioLabelActive: { fontWeight: "bold", color: "#0B214A" },
+
+    radioLabel: {
+      fontSize: 15,
+      color: isDark ? "#CCC" : "#333",
+      fontWeight: "500",
+    },
+
+    radioLabelActive: {
+      fontWeight: "bold",
+      color: isDark ? "#FFFFFF" : "#0B214A",
+    },
     inputsWrapper: {
       flexDirection: "row",
       flexWrap: "wrap",
@@ -319,7 +324,7 @@ const getDynamicStyles = (theme: "light" | "dark") => {
     inputGroup: { width: "30%", marginBottom: 12 },
     inputLabel: {
       fontSize: 14,
-      color: "#555",
+      color: isDark ? "#FFFFFF" : "#000",
       marginBottom: 6,
       fontWeight: "500",
     },
@@ -334,6 +339,7 @@ const getDynamicStyles = (theme: "light" | "dark") => {
     },
     adjustButtonText: { fontSize: 20, fontWeight: "bold", color: "#0B214A" },
     inputWithInfo: { flex: 1, position: "relative" },
+
     input: {
       flex: 1,
       borderWidth: 1,
@@ -342,6 +348,7 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       padding: 10,
       fontSize: 14,
       paddingRight: 28,
+      color: isDark ? "#FFFFFF" : "#000000", // 👈 ESTO SOLUCIONA TU PROBLEMA
     },
     infoButton: {
       position: "absolute",

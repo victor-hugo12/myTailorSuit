@@ -1,0 +1,14 @@
+{
+  "en": {
+    "verify_email": "Verify Email",
+    "verification_code": "Verification Code",
+    "code_sent_to": "We sent a verification code to:",
+    "verify": "Verify",
+    "resend_code": "Resend Code",
+    "code_resent": "A new verification code has been sent.",
+    "invalid_code": "Invalid verification code.",
+    "code_expired": "Verification code expired.",
+    "verification_not_found": "Verification not found.",
+    "email_resend_error": "Could not resend email."
+  }
+}

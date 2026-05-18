@@ -1,11 +1,15 @@
-// Importaciones
 import firebase from "@react-native-firebase/app";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-// Obtener la app por defecto
-const app = firebase.app();
+import { GoogleSignin } from "@react-native-google-signin/google-signin";
 
-// Auth y Firestore usando la app por defecto
-export const firebaseAuth = auth(app);
-export const db = firestore(app);
+GoogleSignin.configure({
+  webClientId:
+    "616381673530-gcl7hlgvluh6jak8n7rasa5qugfpp278.apps.googleusercontent.com",
+});
+
+export const firebaseAuth = auth();
+export const db = firestore();
+
+export default firebase;

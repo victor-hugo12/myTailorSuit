@@ -1,0 +1,9 @@
+{
+  "en": {
+    "forgot_password_title": "Recover password",
+    "send_reset_email": "Send recovery email",
+    "reset_email_sent": "A password recovery email has been sent.",
+    "reset_email_error": "Unable to send the email.",
+    "back_to_login": "Back to login"
+  }
+}

@@ -7,9 +7,10 @@
     "no_account": "Don't have an account? Register as:",
     "register_client": "Client",
     "register_tailor": "Tailor",
-
+    "forgot_password": "Forgot your password?",
     "invalid_email": "Invalid email",
     "required_email": "Email is required",
-    "required_password": "Password is required"
+    "required_password": "Password is required",
+    "google_login": "Continue with Google"
   }
 }

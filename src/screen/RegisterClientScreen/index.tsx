@@ -1,15 +1,6 @@
-// src/screens/RegisterClientScreen.tsx
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
-import {
-  Text,
-  TextInput,
-  Button,
-  ActivityIndicator,
-  Dialog,
-  Portal,
-  Paragraph,
-} from "react-native-paper";
+import { Text, TextInput, Button, ActivityIndicator } from "react-native-paper";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
@@ -23,19 +14,30 @@ import i18n from "@/language";
 
 import en from "./en.json";
 import es from "./es.json";
-import firestore from "@react-native-firebase/firestore";
 
-import { firebaseAuth, db } from "@/config/firebaseConfig";
+import firestore from "@react-native-firebase/firestore";
+import { db, firebaseAuth } from "@/config/firebaseConfig";
 
 i18n.store(en);
 i18n.store(es);
+
+type FormValues = {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export default function RegisterClientScreen() {
   const theme = useAppSelector(selectTheme);
   const styles = getStyles(theme);
 
+  const textColor = theme === "dark" ? "#ffffff" : "#000000";
+  const outlineColor = theme === "dark" ? "#666666" : "#cccccc";
+  const activeOutlineColor = theme === "dark" ? "#ffffff" : "#6200ee";
+  const placeholderColor = theme === "dark" ? "#aaaaaa" : "#666666";
+
   const [firebaseError, setFirebaseError] = useState("");
-  const [visible, setVisible] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -53,21 +55,48 @@ export default function RegisterClientScreen() {
       .required(i18n.t("error_confirm_required")),
   });
 
-  const showDialog = () => setVisible(true);
-  const hideDialog = () => {
-    setVisible(false);
-    router.push("/");
+  const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString();
   };
 
-  const textColor = theme === "dark" ? "#ffffff" : "#000000";
-  const outlineColor = theme === "dark" ? "#555555" : "#cccccc";
-  const activeOutlineColor = theme === "dark" ? "#ffffff" : "#6200ee";
+  const sendVerificationEmail = async (
+    email: string,
+    name: string,
+    code: string,
+  ) => {
+    try {
+      const response = await fetch(
+        "https://api.emailjs.com/api/v1.0/email/send",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            service_id: "service_8hz8b5k",
+            template_id: "template_v5hwur4",
+            user_id: "6lfXJtaegeASdYWwS",
+            template_params: {
+              name,
+              email,
+              code,
+            },
+          }),
+        },
+      );
+
+      return response.status === 200;
+    } catch (error) {
+      console.log("Email error:", error);
+      return false;
+    }
+  };
 
   return (
     <View style={styles.container}>
       <Header title={i18n.t("title")} showBackButton />
 
-      <Formik
+      <Formik<FormValues>
         initialValues={{
           name: "",
           email: "",
@@ -80,24 +109,55 @@ export default function RegisterClientScreen() {
           setIsSubmitting(true);
 
           try {
-            // 🔹 Crear usuario con RNFirebase (namespaced API)
-            const userCredential =
-              await firebaseAuth.createUserWithEmailAndPassword(
-                values.email,
-                values.password
-              );
+            try {
+              const tempUser =
+                await firebaseAuth.createUserWithEmailAndPassword(
+                  values.email,
+                  values.password,
+                );
 
-            // 🔹 Guardar datos en Firestore
-            // Guardar datos en Firestore RNFirebase
-            await db.collection("users").doc(userCredential.user.uid).set({
-              role: "client",
-              name: values.name,
-              email: values.email,
-              createdAt: firestore.FieldValue.serverTimestamp(), // ← aquí
-            });
+              await tempUser.user.delete();
+            } catch (error: any) {
+              if (error.code === "auth/email-already-in-use") {
+                throw new Error("This email is already registered");
+              }
+
+              throw error;
+            }
+
+            const verificationCode = generateVerificationCode();
+
+            const verificationDoc = await db
+              .collection("email_verifications")
+              .add({
+                name: values.name,
+                email: values.email,
+                code: verificationCode,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                expireAt: new Date(Date.now() + 10 * 60 * 1000),
+              });
+
+            const emailSent = await sendVerificationEmail(
+              values.email,
+              values.name,
+              verificationCode,
+            );
+
+            if (!emailSent) {
+              throw new Error("Could not send verification email");
+            }
 
             setIsSubmitting(false);
-            showDialog();
+
+            router.push({
+              pathname: "/verify-email",
+              params: {
+                verificationId: verificationDoc.id,
+                email: values.email,
+                password: values.password,
+                name: values.name,
+              },
+            });
           } catch (error: any) {
             setFirebaseError(error.message);
             setIsSubmitting(false);
@@ -115,6 +175,7 @@ export default function RegisterClientScreen() {
               textColor={textColor}
               outlineColor={outlineColor}
               activeOutlineColor={activeOutlineColor}
+              placeholderTextColor={placeholderColor}
             />
             {touched.name && errors.name && (
               <Text style={styles.error}>{errors.name}</Text>
@@ -128,10 +189,10 @@ export default function RegisterClientScreen() {
               style={[styles.input, { marginTop: 15 }]}
               keyboardType="email-address"
               autoCapitalize="none"
-              autoCorrect={false}
               textColor={textColor}
               outlineColor={outlineColor}
               activeOutlineColor={activeOutlineColor}
+              placeholderTextColor={placeholderColor}
             />
             {touched.email && errors.email && (
               <Text style={styles.error}>{errors.email}</Text>
@@ -144,10 +205,10 @@ export default function RegisterClientScreen() {
               onChangeText={handleChange("password")}
               style={[styles.input, { marginTop: 15 }]}
               secureTextEntry={!showPassword}
-              autoCapitalize="none"
               textColor={textColor}
               outlineColor={outlineColor}
               activeOutlineColor={activeOutlineColor}
+              placeholderTextColor={placeholderColor}
               right={
                 <TextInput.Icon
                   icon={showPassword ? "eye-off" : "eye"}
@@ -166,10 +227,10 @@ export default function RegisterClientScreen() {
               onChangeText={handleChange("confirmPassword")}
               style={[styles.input, { marginTop: 15 }]}
               secureTextEntry={!showConfirmPassword}
-              autoCapitalize="none"
               textColor={textColor}
               outlineColor={outlineColor}
               activeOutlineColor={activeOutlineColor}
+              placeholderTextColor={placeholderColor}
               right={
                 <TextInput.Icon
                   icon={showConfirmPassword ? "eye-off" : "eye"}
@@ -181,7 +242,9 @@ export default function RegisterClientScreen() {
               <Text style={styles.error}>{errors.confirmPassword}</Text>
             )}
 
-            {firebaseError && <Text style={styles.error}>{firebaseError}</Text>}
+            {firebaseError !== "" && (
+              <Text style={styles.error}>{firebaseError}</Text>
+            )}
 
             <Button
               mode="contained"
@@ -195,18 +258,6 @@ export default function RegisterClientScreen() {
                 i18n.t("register_client")
               )}
             </Button>
-
-            <Portal>
-              <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>{i18n.t("modal_title")}</Dialog.Title>
-                <Dialog.Content>
-                  <Paragraph>{i18n.t("modal_message")}</Paragraph>
-                </Dialog.Content>
-                <Dialog.Actions>
-                  <Button onPress={hideDialog}>{i18n.t("modal_ok")}</Button>
-                </Dialog.Actions>
-              </Dialog>
-            </Portal>
           </>
         )}
       </Formik>
@@ -216,6 +267,7 @@ export default function RegisterClientScreen() {
 
 function getStyles(theme: string) {
   const isDark = theme === "dark";
+
   return StyleSheet.create({
     container: {
       flex: 1,

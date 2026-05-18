@@ -1,14 +1,11 @@
 {
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
-    "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "types": ["expo-router"],
     "paths": {
-      "@/*": [
-        "src/*"
-      ],
-      "@/assets/*": [
-        "assets/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/assets/*": ["./assets/*"]
     },
     "strict": true,
     "strictNullChecks": true,
@@ -16,8 +13,5 @@
     "jsx": "react-jsx",
     "esModuleInterop": true
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ]
+  "include": ["**/*.ts", "**/*.tsx"]
 }

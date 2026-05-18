@@ -103,7 +103,7 @@ export default function OptionsScreen() {
 
   const handleSave = async (
     name: string,
-    action?: "local" | "cloud" | "save_changes" | "copy_cloud" | "copy_local"
+    action?: "local" | "cloud" | "save_changes" | "copy_cloud" | "copy_local",
   ) => {
     if (!previewRef.current) {
       Alert.alert(i18n.t("error"), i18n.t("preview_error"));
@@ -126,7 +126,7 @@ export default function OptionsScreen() {
         name,
         garment,
         measurements: Object.fromEntries(
-          Object.entries(measurements).map(([k, v]) => [k, Number(v) || 0])
+          Object.entries(measurements).map(([k, v]) => [k, Number(v) || 0]),
         ),
         fabric: mappedFabricForPreview!,
         details: selectedOptions,
@@ -177,7 +177,7 @@ export default function OptionsScreen() {
                     Object.entries(measurements).map(([k, v]) => [
                       k,
                       Number(v) || 0,
-                    ])
+                    ]),
                   )}
                   selectedOptions={selectedOptions}
                   garment={garment}
@@ -244,7 +244,7 @@ export default function OptionsScreen() {
                           fabricId: fab.id,
                           fabricName: fab.name,
                           imageKey: fab.id,
-                        })
+                        }),
                       )
                     }
                     theme={theme}
@@ -260,7 +260,7 @@ export default function OptionsScreen() {
                     setShowBackView={setShowBackView}
                     onSelectOption={(group, option) =>
                       dispatch(
-                        updateOption({ groupLabel: group, optionId: option })
+                        updateOption({ groupLabel: group, optionId: option }),
                       )
                     }
                   />

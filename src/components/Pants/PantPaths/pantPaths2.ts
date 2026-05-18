@@ -46,14 +46,13 @@ type PantMeasurements = {
 };
 export function getPantPaths(
   measurements: PantMeasurements,
-  selectedOptions: any
+  selectedOptions: any,
 ) {
   const { waist, thigh, length, inseam, knee, boot } = measurements;
   const backPocketsId = selectedOptions["Back Pockets"];
   const pleatId = selectedOptions["Pleats"];
   const frontPocketId = selectedOptions["Front Pockets"];
   const flyId = selectedOptions["Fly Type"];
-
   const dthigh = (2 * thigh) / Math.PI;
   const dwaist = ellipseAxes(2 * waist);
   const size = length - inseam;
@@ -66,13 +65,12 @@ export function getPantPaths(
   const largoCierre = reducirCierre ? 18 : (y0 - y2 - 4 * width) / 4;
   const x1 = x2,
     y1 = y0 - width * (size - largoCierre);
-  const x4 = x2 - width * dwaist,
-    y4 = y2 - 2 * width;
-
-  const x6 = x0 - width * dthigh - width,
-    y6 = y0;
-  const x5 = (x4 + x6) / 2 - 1.5 * width,
-    y5 = (y4 + y6) / 2;
+  const x3 = x2 - width * dwaist,
+    y3 = y2 - 2 * width;
+  const x5 = x0 - width * dthigh - width,
+    y5 = y0;
+  const x4 = (x3 + x5) / 2 - 1.5 * width,
+    y4 = (y3 + y5) / 2;
 
   const PIERNASUPERIORIZQUIERDA = [
     `M ${x0} ${y0}`,
@@ -80,15 +78,15 @@ export function getPantPaths(
       x0 + (x1 - x0) / 2
     },${y0 + (y1 - y0) / (3 / 2)}, ${x1} ${y1}`,
     `C ${x1}, ${y1}, ${x2},${y2}, ${x2} ${y2}`,
-    `C ${x2 + (x4 - x2) / 3}, ${y2 + (y4 - y2) / 4}, ${
-      x2 + (x4 - x2) / (5 / 3)
-    },${y2 + (y4 - y2) / 2}, ${x4} ${y4}`,
-    `C ${x4 + (x5 - x4) / (7 / 3)}, ${y4 + (y5 - y4) / 4}, ${
-      x4 + (x5 - x4) / (7 / 6)
-    },${y4 + (y5 - y4) / (13 / 8)}, ${x5} ${y5}`,
-    `C ${x5 + (x6 - x5) / 6}, ${y5 + (y6 - y5) / (13 / 6)}, ${
-      x5 + (x6 - x5) / 2
-    },${y5 + (y6 - y5) / (13 / 9)}, ${x6} ${y6}`,
+    `C ${x2 + (x3 - x2) / 3}, ${y2 + (y3 - y2) / 4}, ${
+      x2 + (x3 - x2) / (5 / 3)
+    },${y2 + (y3 - y2) / 2}, ${x3} ${y3}`,
+    `C ${x3 + (x4 - x3) / (7 / 3)}, ${y3 + (y4 - y3) / 4}, ${
+      x3 + (x4 - x3) / (7 / 6)
+    },${y3 + (y4 - y3) / (13 / 8)}, ${x4} ${y4}`,
+    `C ${x4 + (x5 - x4) / 6}, ${y4 + (y5 - y4) / (13 / 6)}, ${
+      x4 + (x5 - x4) / 2
+    },${y4 + (y5 - y4) / (13 / 9)}, ${x5} ${y5}`,
   ].join(" ");
   const x00 = x0 - width,
     y00 = y0;
@@ -116,12 +114,12 @@ export function getPantPaths(
   ].join(" ");
   const dknee = (2 * knee) / Math.PI;
   const dboot = (2 * boot) / Math.PI;
-  const x11 = (x0 + x6) / 2 + (width / 2) * dknee,
+  const x11 = (x0 + x5) / 2 + (width / 2) * dknee,
     y11 = y0 + width * (inseam / 2 - 5);
 
   const x10 = (x0 + x11) / 2 - 0.5 * width,
     y10 = (y0 + y11) / 2;
-  const x13 = (x0 + x6) / 2 + width * 0.75 * dboot - width / 2,
+  const x13 = (x0 + x5) / 2 + width * 0.75 * dboot - width / 2,
     y13 = y0 + width * inseam;
   const x12 = (x11 + x13) / 2,
     y12 = (y11 + y13) / 2;
@@ -134,12 +132,12 @@ export function getPantPaths(
   const x16 = (x15 + x17) / 2 - width / 2,
     y16 = (y15 + y17) / 2;
 
-  const x18 = (x17 + x6) / 2,
-    y18 = (y17 + y6) / 2;
+  const x18 = (x17 + x5) / 2,
+    y18 = (y17 + y5) / 2;
   const PIERNAINFERIORIZQUIERDA = generateLegLeftPath(
     x0,
     y0,
-    x6,
+    x5,
     x10,
     y10,
     x11,
@@ -151,7 +149,7 @@ export function getPantPaths(
     x14,
     y14,
     x17,
-    y17
+    y17,
   );
   const x21 = (x00 + x04) / 2 - (width / 2) * dknee,
     y21 = y00 + width * (inseam / 2 - 5);
@@ -186,16 +184,16 @@ export function getPantPaths(
     x24,
     y24,
     x27,
-    x04
+    x04,
   );
 
-  const MEDSUPERIORIZQUIERDA = generateMedLeftTopPath(x0, y0, x2, y2, x4, x6);
+  const MEDSUPERIORIZQUIERDA = generateMedLeftTopPath(x0, y0, x2, y2, x3, x5);
 
   const PIERNAINFERIORIZQUIERDA2 = generateLegLeftPath2(
     x0,
     y0,
-    x6,
-    y6,
+    x5,
+    y5,
     x11,
     x14,
     y14,
@@ -206,7 +204,7 @@ export function getPantPaths(
     x17,
     y17,
     x18,
-    y18
+    y18,
   );
 
   const MEDSUPERIORDERECHA = generateMedRightTopPath(
@@ -215,7 +213,7 @@ export function getPantPaths(
     x2,
     y2,
     x02,
-    x04
+    x04,
   );
 
   const PIERNAINFERIORDERECHA2 = generateLegRightPath2(
@@ -234,7 +232,7 @@ export function getPantPaths(
     x27,
     y27,
     x28,
-    y28
+    y28,
   );
   const ZIPPER = generateZipperPath(x1, y1, y2, width);
 
@@ -265,18 +263,18 @@ export function getPantPaths(
         y03,
         x04,
         y04,
-        width
+        width,
       );
       BOLSILLODELANTEROIZQUIERDO = generatePocketLeftPath(
         x2,
         y2,
+        x3,
+        y3,
         x4,
         y4,
         x5,
         y5,
-        x6,
-        y6,
-        width
+        width,
       );
       break;
     case 309:
@@ -289,18 +287,18 @@ export function getPantPaths(
         y03,
         x04,
         y04,
-        width
+        width,
       );
       BOLSILLODELANTEROIZQUIERDO = generatePocketJeansLeftPath(
         x2,
         y2,
+        x3,
+        y3,
         x4,
         y4,
         x5,
         y5,
-        x6,
-        y6,
-        width
+        width,
       );
       break;
     case 310:
@@ -313,29 +311,29 @@ export function getPantPaths(
         y03,
         x04,
         y04,
-        width
+        width,
       );
       BOLSILLODELANTEROIZQUIERDO = generatePocketAmericanLeftPath(
         x2,
         y2,
+        x3,
+        y3,
         x4,
         y4,
         x5,
         y5,
-        x6,
-        y6,
-        width
+        width,
       );
       break;
   }
   const PLIEGUEIZQUIERDA = generatePleatLeftPath(
     x2,
     y2,
-    x4,
-    y4,
-    y6,
+    x3,
+    y3,
+    y5,
     width,
-    nPleats
+    nPleats,
   );
   const PLIEGUEDERECHA = generatePleatRightPath(
     x2,
@@ -344,7 +342,7 @@ export function getPantPaths(
     y02,
     y04,
     width,
-    nPleats
+    nPleats,
   );
 
   const { waistPath: CINTURAIZQUIERDA, loopPath: PASADORIZQUIERDO } =
@@ -400,7 +398,7 @@ export function getPantPaths(
         welt: BOLSILLOTRASEROIZQUIERDO,
         tab: PESTAÑATRASEROIZQUIERDO,
         fly: OJALIZQUIERDO,
-      } = generatePocketBackFlapButtonRightPath(x2, x4, y4, width));
+      } = generatePocketBackFlapButtonRightPath(x2, x3, y3, width));
       break;
     case 302:
       ({
@@ -412,7 +410,7 @@ export function getPantPaths(
         welt: BOLSILLOTRASEROIZQUIERDO,
         tab: PESTAÑATRASEROIZQUIERDO,
         fly: OJALIZQUIERDO,
-      } = generatePocketBackWeltRighttPath(x2, x4, y4, width));
+      } = generatePocketBackWeltRighttPath(x2, x3, y3, width));
       break;
     case 303:
       ({
@@ -424,7 +422,7 @@ export function getPantPaths(
         welt: BOLSILLOTRASEROIZQUIERDO,
         tab: PESTAÑATRASEROIZQUIERDO,
         fly: OJALIZQUIERDO,
-      } = generatePocketBackPatchButtonRightPath(x2, y6, x4, y4, width));
+      } = generatePocketBackPatchButtonRightPath(x2, y5, x3, y3, width));
       break;
   }
 

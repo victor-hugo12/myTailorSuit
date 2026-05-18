@@ -1,0 +1,10 @@
+{
+  "en": {
+    "title": "My Profile",
+    "email": "Email",
+    "role": "Role",
+    "settings": "Settings",
+    "logout": "Log out",
+    "user": "User"
+  }
+}

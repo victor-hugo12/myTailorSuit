@@ -4,15 +4,15 @@ export default {
     slug: "myTailorSuit",
     version: "1.0.0",
     orientation: "portrait",
-    icon: "./assets/icon.png",
+    icon: "./assets/IconoApp.png",
     userInterfaceStyle: "light",
     newArchEnabled: true,
     scheme: "mytailorsuit",
 
     splash: {
-      image: "./assets/splash-icon.png",
+      image: "./assets/IconoApp.png",
       resizeMode: "contain",
-      backgroundColor: "#ffffff",
+      backgroundColor: "#1A2332",
     },
 
     ios: {
@@ -21,10 +21,13 @@ export default {
 
     android: {
       package: "com.victorhugo911.myTailorSuit",
+      googleServicesFile: "./google-services.json",
+
       adaptiveIcon: {
-        foregroundImage: "./assets/adaptive-icon.png",
-        backgroundColor: "#ffffff",
+        foregroundImage: "./assets/IconoApp.png",
+        backgroundColor: "#1A2332",
       },
+
       edgeToEdgeEnabled: true,
       predictiveBackGestureEnabled: false,
     },
@@ -33,6 +36,6 @@ export default {
       favicon: "./assets/favicon.png",
     },
 
-    plugins: ["expo-router"], // mantiene esto tal cual
+    plugins: ["expo-router", "@react-native-firebase/app"],
   },
 };

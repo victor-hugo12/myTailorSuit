@@ -7,9 +7,10 @@
     "no_account": "¿No tienes cuenta? Regístrate como:",
     "register_client": "Cliente",
     "register_tailor": "Sastre",
-
+    "forgot_password": "¿Olvidaste tu contraseña?",
     "invalid_email": "Email inválido",
     "required_email": "Email requerido",
-    "required_password": "Contraseña requerida"
+    "required_password": "Contraseña requerida",
+    "google_login": "Continuar con Google"
   }
 }

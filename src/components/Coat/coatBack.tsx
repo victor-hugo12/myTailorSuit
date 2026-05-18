@@ -23,13 +23,13 @@ const CoatBack: React.FC<CoatBackProps> = ({
   sleeveLength,
   shoulder,
   selectedOptions = {},
-  fillColor = "#B0BEC5",
-  strokeColor = "#263238",
+  fillColor = "#fff",
+  strokeColor = "#111",
   selectedFabric,
 }) => {
   const paths = getSacoPaths(
     { coatLength, chest, waist, sleeveLength, shoulder },
-    selectedOptions
+    selectedOptions,
   );
 
   const useTexture = true;

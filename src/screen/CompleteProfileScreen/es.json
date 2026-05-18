@@ -1,0 +1,14 @@
+{
+  "es": {
+    "complete_profile": "Completar perfil",
+    "user_type": "Tipo de usuario",
+    "client": "Cliente",
+    "tailor": "Sastre",
+    "shop_name": "Nombre de la tienda",
+    "save_profile": "Guardar perfil",
+    "error": "Error",
+    "unauthenticated_user": "Usuario no autenticado",
+    "shop_required": "Ingrese el nombre de la tienda",
+    "profile_save_error": "No se pudo guardar el perfil"
+  }
+}

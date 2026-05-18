@@ -1,0 +1,14 @@
+{
+  "es": {
+    "verify_email": "Verificar correo",
+    "verification_code": "Código de verificación",
+    "code_sent_to": "Hemos enviado un código de verificación a:",
+    "verify": "Verificar",
+    "resend_code": "Reenviar código",
+    "code_resent": "Se ha enviado un nuevo código de verificación.",
+    "invalid_code": "Código de verificación inválido.",
+    "code_expired": "El código de verificación ha expirado.",
+    "verification_not_found": "Verificación no encontrada.",
+    "email_resend_error": "No se pudo reenviar el correo."
+  }
+}

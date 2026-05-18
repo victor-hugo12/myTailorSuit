@@ -183,6 +183,20 @@
     "saved_successfully": "Guardado correctamente",
     "save_changes": "Guardar cambios",
     "copy_cloud": "Copia en nube",
-    "copy_local": "Copia local"
+    "copy_local": "Copia local",
+
+    "wool": "Lana",
+    "recycledfibers": "Fibras recicladas",
+    "linen-cotton": "Lino - Algodón",
+    "linen-blends": "Mezcla de lino",
+    "linen": "Lino",
+    "cotton-linen": "Algodón - Lino",
+    "cotton": "Algodón",
+    "cotton-blends": "Mezcla de algodón",
+    "polyester-rayon": "Poliéster - Rayón",
+    "wool-blends": "Mezcla de lana",
+    "pure-wool": "Lana pura",
+    "merino-wool": "Lana merino",
+    "polyester": "Poliéster"
   }
 }
