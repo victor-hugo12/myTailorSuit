@@ -3,23 +3,16 @@
 export type GarmentType = "pants" | "vest" | "coat";
 
 export interface MeasurementRule {
-  dependsOn: string; // medida base (ej: muslo, cintura, rodilla)
+  dependsOn: string;
   min?: (baseValue: number) => number;
   max?: (baseValue: number) => number;
   message: (baseValue: number) => string;
 }
 
-/**
- * Reglas de validación de medidas por prenda
- * Cada regla se evalúa cuando se intenta modificar la clave (key)
- */
 export const measurementRules: Record<
   GarmentType,
   Record<string, MeasurementRule[]>
 > = {
-  // =========================
-  // 👖 PANTALÓN
-  // =========================
   pants: {
     knee: [
       {

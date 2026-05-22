@@ -23,10 +23,15 @@ interface MeasurementsPanelProps {
   onChangeMeasurement: (field: string, value: string) => void;
   onChangeSize: (size: string) => void;
   theme: "light" | "dark";
+  userRole?: "client" | "tailor";
 }
-
 const STEP = 0.5;
 const INTERVAL_MS = 150;
+const BASIC_MEASUREMENTS = {
+  coat: ["chest", "waist", "sleeveLength"],
+  vest: ["chest", "waist"],
+  pants: ["waist", "length"],
+};
 
 const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
   garmentType,
@@ -35,67 +40,82 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
   onChangeMeasurement,
   onChangeSize,
   theme,
+  userRole = "client",
 }) => {
   const garmentSizes = Object.keys(defaultSizes[garmentType]);
   const measurementEntries = Object.entries(localMeasurements);
+  const [showAdvanced, setShowAdvanced] = useState(userRole === "tailor");
+  const visibleMeasurements = showAdvanced
+    ? measurementEntries
+    : measurementEntries.filter(([key]) =>
+        BASIC_MEASUREMENTS[garmentType].includes(key),
+      );
   const dynamicStyles = getDynamicStyles(theme);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [tempValues, setTempValues] =
     useState<Record<string, string>>(localMeasurements);
 
-  const [sizesVisible, setSizesVisible] = useState(true); // mostrar/ocultar tallas
-
+  const [sizesVisible, setSizesVisible] = useState(true);
   useEffect(() => {
     setTempValues(localMeasurements);
   }, [localMeasurements]);
-
   const [modalVisible, setModalVisible] = useState(false);
+
   const [modalData, setModalData] = useState<{
     title: string;
     steps: string[];
     images: any[];
-  }>({ title: "", steps: [], images: [] });
+  }>({
+    title: "",
+    steps: [],
+    images: [],
+  });
 
   const finalizeMeasurement = (field: string, text: string) => {
     const nextValue = parseFloat(text);
+
     if (isNaN(nextValue)) {
-      setTempValues((prev) => ({ ...prev, [field]: localMeasurements[field] }));
+      setTempValues((prev) => ({
+        ...prev,
+        [field]: localMeasurements[field],
+      }));
       return;
     }
-
     const validation = validateMeasurement(
       garmentType,
       field,
       nextValue,
       localMeasurements,
     );
-
     if (!validation.isValid) {
       setErrors((prev) => ({
         ...prev,
         [field]: validation.message || i18n.t("invalid_value"),
       }));
-      setTempValues((prev) => ({ ...prev, [field]: localMeasurements[field] }));
+      setTempValues((prev) => ({
+        ...prev,
+        [field]: localMeasurements[field],
+      }));
+
       return;
     }
-
     setErrors((prev) => {
       const updated = { ...prev };
       delete updated[field];
       return updated;
     });
-
     onChangeMeasurement(field, nextValue.toString());
-    setTempValues((prev) => ({ ...prev, [field]: nextValue.toString() }));
+    setTempValues((prev) => ({
+      ...prev,
+      [field]: nextValue.toString(),
+    }));
   };
-
   const adjustMeasurement = (field: string, delta: number) => {
     const current = parseFloat(localMeasurements[field] || "0");
     const next = Math.max(0, current + delta);
     finalizeMeasurement(field, next.toString());
   };
-
   const startAdjusting = (field: string, delta: number) => {
     adjustMeasurement(field, delta);
     intervalRef.current = setInterval(() => {
@@ -113,7 +133,6 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
   const showInstructions = (key: string) => {
     const instruction = measurementInstructions[garmentType][key];
     if (!instruction) return;
-
     const imagesMap: Record<string, any[]> = {
       vestLength: [
         require("../../../../assets/instructions/lenghtCoat1.png"),
@@ -158,7 +177,6 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
         style={dynamicStyles.measurementsContainer}
         contentContainerStyle={{ paddingBottom: 20 }}
       >
-        {/* BOTÓN PARA MOSTRAR/OCULTAR TALLAS */}
         <TouchableOpacity
           style={dynamicStyles.toggleSizesButton}
           onPress={() => setSizesVisible(!sizesVisible)}
@@ -197,11 +215,22 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
           </ScrollView>
         )}
 
-        {/* INPUTS */}
+        <TouchableOpacity
+          style={dynamicStyles.advancedButton}
+          onPress={() => setShowAdvanced((prev) => !prev)}
+        >
+          <Text style={dynamicStyles.advancedButtonText}>
+            {showAdvanced
+              ? "✂ Ocultar medidas avanzadas"
+              : "✂ Mostrar medidas avanzadas"}
+          </Text>
+        </TouchableOpacity>
+
         <View style={dynamicStyles.inputsWrapper}>
-          {measurementEntries.map(([key]) => (
+          {visibleMeasurements.map(([key]) => (
             <View key={key} style={dynamicStyles.inputGroup}>
               <Text style={dynamicStyles.inputLabel}>{i18n.t(key)}</Text>
+
               <View style={dynamicStyles.inputRow}>
                 <TouchableOpacity
                   style={dynamicStyles.adjustButton}
@@ -220,7 +249,10 @@ const MeasurementsPanel: React.FC<MeasurementsPanelProps> = ({
                     value={tempValues[key]}
                     keyboardType="numeric"
                     onChangeText={(text) =>
-                      setTempValues((prev) => ({ ...prev, [key]: text }))
+                      setTempValues((prev) => ({
+                        ...prev,
+                        [key]: text,
+                      }))
                     }
                     onEndEditing={(e) =>
                       finalizeMeasurement(key, e.nativeEvent.text)
@@ -271,7 +303,11 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       padding: 10,
       backgroundColor: isDark ? "#121212" : "#fff",
     },
-    measurementsContainer: { width: "100%" },
+
+    measurementsContainer: {
+      width: "100%",
+    },
+
     toggleSizesButton: {
       paddingVertical: 6,
       paddingHorizontal: 10,
@@ -279,11 +315,28 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       backgroundColor: isDark ? "#1E1E1E" : "#F3F4F6",
       borderRadius: 6,
     },
+
     toggleSizesText: {
       fontSize: 14,
       fontWeight: "bold",
       color: isDark ? "#FFF" : "#0B214A",
     },
+
+    advancedButton: {
+      marginTop: 4,
+      marginBottom: 10,
+      paddingVertical: 8,
+      paddingHorizontal: 10,
+      borderRadius: 6,
+      backgroundColor: isDark ? "#1E1E1E" : "#EEF2FF",
+    },
+
+    advancedButtonText: {
+      fontSize: 14,
+      fontWeight: "600",
+      color: isDark ? "#FFFFFF" : "#0B214A",
+    },
+
     horizontalSizesContainer: {
       flexDirection: "row",
       paddingVertical: 10,
@@ -315,20 +368,31 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       fontWeight: "bold",
       color: isDark ? "#FFFFFF" : "#0B214A",
     },
+
     inputsWrapper: {
       flexDirection: "row",
       flexWrap: "wrap",
       justifyContent: "space-between",
       gap: 10,
     },
-    inputGroup: { width: "30%", marginBottom: 12 },
+
+    inputGroup: {
+      width: "30%",
+      marginBottom: 12,
+    },
+
     inputLabel: {
       fontSize: 14,
       color: isDark ? "#FFFFFF" : "#000",
       marginBottom: 6,
       fontWeight: "500",
     },
-    inputRow: { flexDirection: "row", alignItems: "center" },
+
+    inputRow: {
+      flexDirection: "row",
+      alignItems: "center",
+    },
+
     adjustButton: {
       width: 22,
       height: 34,
@@ -337,9 +401,17 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       justifyContent: "center",
       alignItems: "center",
     },
-    adjustButtonText: { fontSize: 20, fontWeight: "bold", color: "#0B214A" },
-    inputWithInfo: { flex: 1, position: "relative" },
 
+    adjustButtonText: {
+      fontSize: 20,
+      fontWeight: "bold",
+      color: "#0B214A",
+    },
+
+    inputWithInfo: {
+      flex: 1,
+      position: "relative",
+    },
     input: {
       flex: 1,
       borderWidth: 1,
@@ -348,7 +420,7 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       padding: 10,
       fontSize: 14,
       paddingRight: 28,
-      color: isDark ? "#FFFFFF" : "#000000", // 👈 ESTO SOLUCIONA TU PROBLEMA
+      color: isDark ? "#FFFFFF" : "#000000",
     },
     infoButton: {
       position: "absolute",
@@ -359,9 +431,21 @@ const getDynamicStyles = (theme: "light" | "dark") => {
       justifyContent: "center",
       alignItems: "center",
     },
-    infoText: { fontSize: 14, color: "#0B214A" },
-    inputError: { borderColor: "#DC2626" },
-    errorText: { marginTop: 4, fontSize: 12, color: "#DC2626" },
+
+    infoText: {
+      fontSize: 14,
+      color: "#0B214A",
+    },
+
+    inputError: {
+      borderColor: "#DC2626",
+    },
+
+    errorText: {
+      marginTop: 4,
+      fontSize: 12,
+      color: "#DC2626",
+    },
   });
 };
 

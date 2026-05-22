@@ -47,9 +47,9 @@ import { defaultSizes } from "./medidas";
 import { firebaseAuth } from "@/config/firebaseConfig";
 
 const MAIN_TABS = [
-  { label: "measurements" },
   { label: "fabrics" },
   { label: "details" },
+  { label: "measurements" },
 ] as const;
 
 export default function OptionsScreen() {
@@ -65,14 +65,13 @@ export default function OptionsScreen() {
   const previewRef = useRef<View>(null);
 
   const [activeTab, setActiveTab] = useState<
-    "measurements" | "fabrics" | "details"
-  >("details");
+    "fabrics" | "details" | "measurements"
+  >("fabrics");
   const [showBackView, setShowBackView] = useState(false);
   const [showNameModal, setShowNameModal] = useState(false);
   const [suitName, setSuitName] = useState("");
   const [userLoggedIn, setUserLoggedIn] = useState(false);
 
-  // ✅ Persistencia de sesión con RNFirebase v17
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((user) => {
       setUserLoggedIn(!!user);
@@ -214,19 +213,6 @@ export default function OptionsScreen() {
               </View>
 
               <View style={styles.contentContainer}>
-                {activeTab === "measurements" && (
-                  <MeasurementsPanel
-                    garmentType={garment}
-                    theme={theme}
-                    localMeasurements={measurements}
-                    localSize={size}
-                    onChangeMeasurement={(field, value) =>
-                      dispatch(updateMeasurement({ field, value }))
-                    }
-                    onChangeSize={handleChangeSize}
-                  />
-                )}
-
                 {activeTab === "fabrics" && (
                   <FabricsGrid
                     garment={garment}
@@ -263,6 +249,18 @@ export default function OptionsScreen() {
                         updateOption({ groupLabel: group, optionId: option }),
                       )
                     }
+                  />
+                )}
+                {activeTab === "measurements" && (
+                  <MeasurementsPanel
+                    garmentType={garment}
+                    theme={theme}
+                    localMeasurements={measurements}
+                    localSize={size}
+                    onChangeMeasurement={(field, value) =>
+                      dispatch(updateMeasurement({ field, value }))
+                    }
+                    onChangeSize={handleChangeSize}
                   />
                 )}
               </View>

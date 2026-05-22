@@ -31,9 +31,9 @@ import { ActivityIndicator } from "react-native-paper";
 i18n.store(en);
 i18n.store(es);
 const MAIN_TABS = [
-  { label: "measurements" },
   { label: "fabrics" },
   { label: "details" },
+  { label: "measurements" },
 ];
 
 export default function EditSuitScreen() {
@@ -75,7 +75,7 @@ export default function EditSuitScreen() {
       setLoadedSuit(result);
       setLocalDetails(result.details || {});
       setLocalFabric(
-        result.fabric ? { ...result.fabric, imageKey: result.fabric.id } : null
+        result.fabric ? { ...result.fabric, imageKey: result.fabric.id } : null,
       );
       setActiveTab(MAIN_TABS[0].label);
     } catch (err) {
@@ -110,7 +110,7 @@ export default function EditSuitScreen() {
 
   const handleSave = async (
     name: string,
-    action?: "local" | "cloud" | "save_changes" | "copy_cloud" | "copy_local"
+    action?: "local" | "cloud" | "save_changes" | "copy_cloud" | "copy_local",
   ) => {
     if (!loadedSuit) return;
 
@@ -139,7 +139,7 @@ export default function EditSuitScreen() {
             const publicUrl = await saveSuitToCloud(
               newSuit,
               previewRef.current,
-              loadedSuit.id
+              loadedSuit.id,
             );
             newSuit.previewUri = publicUrl;
             Alert.alert(i18n.t("saved"), i18n.t("updated_in_cloud"));
@@ -154,7 +154,7 @@ export default function EditSuitScreen() {
           newSuit = { ...newSuit, id: uuid.v4().toString() };
           const publicUrlCopy = await saveSuitToCloud(
             newSuit,
-            previewRef.current
+            previewRef.current,
           );
           newSuit.previewUri = publicUrlCopy;
           setLoadedSuit({ ...newSuit });
@@ -174,7 +174,7 @@ export default function EditSuitScreen() {
         case "cloud":
           const publicUrlCloud = await saveSuitToCloud(
             newSuit,
-            previewRef.current
+            previewRef.current,
           );
           newSuit.previewUri = publicUrlCloud;
           setLoadedSuit({ ...newSuit });
@@ -257,35 +257,6 @@ export default function EditSuitScreen() {
       </View>
 
       <View style={styles.contentContainer}>
-        {activeTab === "measurements" && (
-          <MeasurementsPanel
-            garmentType={loadedSuit.garment}
-            theme={theme}
-            localMeasurements={Object.fromEntries(
-              Object.entries(loadedSuit.measurements || {}).map(([k, v]) => [
-                k,
-                String(v),
-              ])
-            )}
-            localSize={loadedSuit.size || "M"}
-            onChangeMeasurement={(field, valueStr) =>
-              setLoadedSuit((prev) =>
-                prev
-                  ? {
-                      ...prev,
-                      measurements: {
-                        ...prev.measurements,
-                        [field]: Number(valueStr) || 0,
-                      },
-                    }
-                  : prev
-              )
-            }
-            onChangeSize={(size) =>
-              setLoadedSuit((prev) => (prev ? { ...prev, size } : prev))
-            }
-          />
-        )}
         {activeTab === "fabrics" && (
           <FabricsGrid
             garment={loadedSuit.garment}
@@ -308,8 +279,36 @@ export default function EditSuitScreen() {
             }
           />
         )}
+        {activeTab === "measurements" && (
+          <MeasurementsPanel
+            garmentType={loadedSuit.garment}
+            theme={theme}
+            localMeasurements={Object.fromEntries(
+              Object.entries(loadedSuit.measurements || {}).map(([k, v]) => [
+                k,
+                String(v),
+              ]),
+            )}
+            localSize={loadedSuit.size || "M"}
+            onChangeMeasurement={(field, valueStr) =>
+              setLoadedSuit((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      measurements: {
+                        ...prev.measurements,
+                        [field]: Number(valueStr) || 0,
+                      },
+                    }
+                  : prev,
+              )
+            }
+            onChangeSize={(size) =>
+              setLoadedSuit((prev) => (prev ? { ...prev, size } : prev))
+            }
+          />
+        )}
       </View>
-
       <SuitNameModal
         visible={showSaveModal}
         initialName={suitName}
