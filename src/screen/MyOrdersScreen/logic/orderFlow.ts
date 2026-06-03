@@ -1,4 +1,18 @@
 // myTailorSuit/screen/MyOrdersScreen/logic/orderFlow.ts
+export const ORDER_STATE_LABELS: Record<OrderStatus, string> = {
+  PENDIENTE_APROBACION_SASTRE: "pending_tailor_approval",
+  PENDIENTE_COTIZACION: "pending_quote",
+  COTIZADO: "quoted",
+  ESPERANDO_PAGO: "waiting_payment",
+  ANTICIPO_PAGADO: "deposit_paid",
+  EN_CONFECCIÓN: "in_production",
+  CONTROL_CALIDAD: "quality_control",
+  LISTO_ENVÍO: "ready_to_ship",
+  ENTREGADO: "delivered",
+  CANCELADO_CLIENTE: "canceled_by_client",
+  CANCELADO_SASTRE: "canceled_by_tailor",
+};
+
 export type OrderStatus =
   | "PENDIENTE_APROBACION_SASTRE"
   | "PENDIENTE_COTIZACION"
@@ -11,20 +25,6 @@ export type OrderStatus =
   | "ENTREGADO"
   | "CANCELADO_CLIENTE"
   | "CANCELADO_SASTRE";
-
-export const ORDER_STATE_LABELS: Record<OrderStatus, string> = {
-  PENDIENTE_APROBACION_SASTRE: "Pendiente Sastre",
-  PENDIENTE_COTIZACION: "Pendiente Cotización",
-  COTIZADO: "Cotizado",
-  ESPERANDO_PAGO: "Esperando Pago",
-  ANTICIPO_PAGADO: "Anticipo Pagado",
-  EN_CONFECCIÓN: "En Confección",
-  CONTROL_CALIDAD: "Control de Calidad",
-  LISTO_ENVÍO: "Listo para Envío",
-  ENTREGADO: "Entregado",
-  CANCELADO_CLIENTE: "Cancelado Cliente",
-  CANCELADO_SASTRE: "Cancelado Sastre",
-};
 
 export const ORDER_STATE_COLORS: Record<OrderStatus, string> = {
   PENDIENTE_APROBACION_SASTRE: "#FFA500",

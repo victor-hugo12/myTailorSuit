@@ -12,6 +12,7 @@ import { selectTheme } from "@/redux/selections/selections.selectors";
 import SuitCard from "./SuitCard";
 import { SavedSuit } from "../../OptionsScreen/types/suits";
 import { Provider, Button } from "react-native-paper";
+import i18n from "@/language";
 
 interface SuitSavingState {
   isSaving: boolean;
@@ -23,15 +24,12 @@ interface SuitsSectionProps {
   suits: SavedSuit[];
   onDelete: (suit: SavedSuit) => void;
 
-  // 👇 Opcionales
   onSaveToCloud?: (suit: SavedSuit) => Promise<void>;
   onSaveToLocal?: (suit: SavedSuit) => Promise<void>;
 
   savingStates?: { [id: string]: SuitSavingState };
   source: "cloud" | "local";
   onRefresh: () => void;
-
-  // ✅ NUEVO
   isLoggedIn: boolean;
 }
 
@@ -64,7 +62,7 @@ export default function SuitsSection({
 
     if (searchQuery.trim() !== "") {
       filtered = filtered.filter((s) =>
-        s.name.toLowerCase().includes(searchQuery.toLowerCase())
+        s.name.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
@@ -125,31 +123,38 @@ export default function SuitsSection({
       paddingHorizontal: 12,
       backgroundColor: "#eee",
     },
-    optionButtonActive: { backgroundColor: "#0B214A" },
-    optionText: { color: "#333", fontWeight: "bold" },
-    optionTextActive: { color: "#fff" },
+    optionButtonActive: {
+      backgroundColor: "#0B214A",
+    },
+    optionText: {
+      color: "#333",
+      fontWeight: "bold",
+    },
+    optionTextActive: {
+      color: "#fff",
+    },
   });
 
   const sortOptions = [
-    { value: "az", label: "A–Z" },
-    { value: "za", label: "Z–A" },
-    { value: "date_asc", label: "↑ Fecha" },
-    { value: "date_desc", label: "↓ Fecha" },
+    { value: "az", label: i18n.t("sort_az") },
+    { value: "za", label: i18n.t("sort_za") },
+    { value: "date_asc", label: i18n.t("sort_date_asc") },
+    { value: "date_desc", label: i18n.t("sort_date_desc") },
   ];
 
   return (
     <Provider>
       <View style={sectionStyles.container}>
-        {/* Título + Actualizar */}
         <View style={sectionStyles.titleRow}>
           <Text style={sectionStyles.sectionTitle}>{title}</Text>
+
           <Button mode="contained" onPress={onRefresh} compact>
-            Actualizar
+            {i18n.t("refresh")}
           </Button>
         </View>
 
         <TextInput
-          placeholder="Buscar…"
+          placeholder={i18n.t("search")}
           placeholderTextColor={theme === "dark" ? "#888" : "#666"}
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -158,7 +163,7 @@ export default function SuitsSection({
 
         <View style={sectionStyles.comboContainer}>
           <Button mode="outlined" onPress={() => setShowOptions(!showOptions)}>
-            Ordenar
+            {i18n.t("sort")}
           </Button>
 
           {showOptions && (
@@ -202,7 +207,6 @@ export default function SuitsSection({
                 suit={{ ...item, source }}
                 onDelete={onDelete}
                 onSaveToLocal={onSaveToLocal}
-                // ✅ SOLO SI ESTÁ LOGUEADO
                 onSaveToCloud={isLoggedIn ? onSaveToCloud : undefined}
                 isSaving={state.isSaving}
                 savedSuccessfully={state.savedSuccessfully}

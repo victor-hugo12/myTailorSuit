@@ -1,4 +1,4 @@
-// src/screens/OptionsScreen/components/FabricsGrid.tsx
+// src/screen/OptionsScreen/components/FabricsGrid.tsx
 import React, {
   useCallback,
   useMemo,
@@ -42,6 +42,7 @@ interface FabricsGridProps {
   onSelectFabric: (fabric: FabricSelection) => void;
   theme: "light" | "dark";
 }
+
 const FabricCard: React.FC<{
   item: Fabric;
   isSelected: boolean;
@@ -76,7 +77,7 @@ const FabricsGrid: React.FC<FabricsGridProps> = ({
 }) => {
   const [activeTones, setActiveTones] = useState<string[]>([]);
   const [activeCompositions, setActiveCompositions] = useState<string[]>([]);
-  const [filtersVisible, setFiltersVisible] = useState(false); // toggle igual que MeasurementsPanel
+  const [filtersVisible, setFiltersVisible] = useState(false);
 
   const listRef = useRef<FlatList<Fabric>>(null);
 
@@ -102,16 +103,46 @@ const FabricsGrid: React.FC<FabricsGridProps> = ({
      FILTERED FABRICS
   ========================= */
   const filteredFabrics = useMemo(() => {
-    return fabricsData.filter((fabric) => {
+    const filtered = fabricsData.filter((fabric) => {
       const toneMatch =
         activeTones.length === 0 || activeTones.includes(fabric.tone);
+
       const compositionMatch =
         activeCompositions.length === 0 ||
         activeCompositions.includes(fabric.simple_composition);
 
       return toneMatch && compositionMatch;
     });
-  }, [activeTones, activeCompositions]);
+
+    // Mantener siempre visible la tela seleccionada
+    if (
+      selectedFabric?.id &&
+      !filtered.some((f) => f.id === selectedFabric.id)
+    ) {
+      const selected = fabricsData.find((f) => f.id === selectedFabric.id);
+
+      if (selected) {
+        return [selected, ...filtered];
+      }
+    }
+
+    return filtered;
+  }, [activeTones, activeCompositions, selectedFabric]);
+  /* =========================
+     AUTO SELECT FIRST FABRIC
+  ========================= */
+  useEffect(() => {
+    if (filteredFabrics.length > 0 && (!selectedFabric || !selectedFabric.id)) {
+      const firstFabric = filteredFabrics[0];
+
+      onSelectFabric({
+        id: firstFabric.id,
+        name: firstFabric.name,
+        imageKey: firstFabric.name,
+        image: firstFabric.image,
+      });
+    }
+  }, [filteredFabrics, selectedFabric, onSelectFabric]);
 
   /* =========================
      SCROLL TO TOP WHEN FILTER CHANGES
@@ -139,7 +170,7 @@ const FabricsGrid: React.FC<FabricsGridProps> = ({
           return "0";
       }
     },
-    [garment]
+    [garment],
   );
 
   const handleSelectFabric = (item: Fabric) => {
@@ -176,14 +207,14 @@ const FabricsGrid: React.FC<FabricsGridProps> = ({
             setActiveTones((prev) =>
               prev.includes(tone)
                 ? prev.filter((t) => t !== tone)
-                : [...prev, tone]
+                : [...prev, tone],
             )
           }
           toggleComposition={(comp) =>
             setActiveCompositions((prev) =>
               prev.includes(comp)
                 ? prev.filter((c) => c !== comp)
-                : [...prev, comp]
+                : [...prev, comp],
             )
           }
           clearFilters={() => {
@@ -203,6 +234,7 @@ const FabricsGrid: React.FC<FabricsGridProps> = ({
         renderItem={({ item }) => {
           const isSelected = selectedFabric?.id === item.id;
           const imageSource = fabricImages[item.name];
+
           if (!imageSource) return null;
 
           return (

@@ -16,6 +16,16 @@ import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { ActivityIndicator } from "react-native-paper";
 
+import i18n from "@/language";
+import en from "../en.json";
+import es from "../es.json";
+
+import { useAppSelector } from "@/redux/hooks";
+import { selectLanguage } from "@/redux/selections/selections.selectors";
+
+i18n.store(en);
+i18n.store(es);
+
 interface SuitCardProps {
   suit: SavedSuit & { previewUri?: string; source: "cloud" | "local" };
   onDelete: (suit: SavedSuit) => void;
@@ -34,6 +44,10 @@ export default function SuitCard({
   savedSuccessfully = false,
 }: SuitCardProps) {
   const router = useRouter();
+
+  const language = useAppSelector(selectLanguage);
+  i18n.locale = language;
+
   const user = auth().currentUser;
 
   const [role, setRole] = useState<string | null>(null);
@@ -65,9 +79,10 @@ export default function SuitCard({
   const [error, setError] = useState(false);
   const [imageUri, setImageUri] = useState(suit.previewUri ?? null);
   const [showMenu, setShowMenu] = useState(false);
+
   const isCloud = suit.source === "cloud";
 
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setError(false);
@@ -87,13 +102,19 @@ export default function SuitCard({
   const handleImageLoaded = () => {
     setLoading(false);
     setError(false);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
   };
 
   const handleImageError = () => {
     setLoading(false);
     setError(true);
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
   };
 
   const reloadImage = () => {
@@ -147,7 +168,11 @@ export default function SuitCard({
       alignItems: "center",
       position: "relative",
     },
-    image: { width: "100%", height: "100%", position: "absolute" },
+    image: {
+      width: "100%",
+      height: "100%",
+      position: "absolute",
+    },
     name: {
       fontWeight: "bold",
       fontSize: 16,
@@ -190,7 +215,9 @@ export default function SuitCard({
       borderRadius: 10,
       marginHorizontal: 40,
     },
-    menuOption: { paddingVertical: 12 },
+    menuOption: {
+      paddingVertical: 12,
+    },
     menuText: {
       fontSize: 16,
       color: "#000",
@@ -218,6 +245,7 @@ export default function SuitCard({
       <View>
         <View style={styles.imageWrapper}>
           {loading && !error && <ActivityIndicator size="large" />}
+
           {imageUri && !error && (
             <Image
               source={{ uri: imageUri }}
@@ -227,12 +255,14 @@ export default function SuitCard({
               onError={handleImageError}
             />
           )}
+
           {error && (
             <View style={{ justifyContent: "center", alignItems: "center" }}>
-              <Text style={styles.errorText}>Error al cargar imagen</Text>
+              <Text style={styles.errorText}>{i18n.t("image_load_error")}</Text>
+
               <TouchableOpacity onPress={reloadImage}>
                 <Text style={{ color: "#1976D2", fontWeight: "bold" }}>
-                  Recargar
+                  {i18n.t("reload")}
                 </Text>
               </TouchableOpacity>
             </View>
@@ -241,24 +271,29 @@ export default function SuitCard({
           {isSaving && (
             <View style={styles.overlay}>
               <ActivityIndicator size="large" />
-              <Text style={styles.overlayText}>Guardando...</Text>
+              <Text style={styles.overlayText}>{i18n.t("saving")}</Text>
             </View>
           )}
 
           {savedSuccessfully && !isSaving && (
             <View style={styles.overlay}>
-              <Text style={styles.overlayText}>✔ Guardado</Text>
+              <Text style={styles.overlayText}>✔ {i18n.t("saved")}</Text>
             </View>
           )}
         </View>
 
         <TouchableOpacity
           onPress={() =>
-            router.push({ pathname: "/edit", params: { suitId: suit.id } })
+            router.push({
+              pathname: "/edit",
+              params: { suitId: suit.id },
+            })
           }
         >
           <Text style={styles.name}>{suit.name}</Text>
+
           <Text style={styles.type}>{suit.garment.toUpperCase()}</Text>
+
           <Text style={styles.date}>
             {new Date(suit.savedAt).toLocaleString()}
           </Text>
@@ -275,38 +310,36 @@ export default function SuitCard({
             }}
           >
             <View style={styles.menuModal}>
-              {/* EDITAR → cualquier usuario logueado */}
-
               <TouchableOpacity
                 style={styles.menuOption}
                 onPress={() => {
                   setShowMenu(false);
+
                   router.push({
                     pathname: "/edit",
                     params: { suitId: suit.id },
                   });
                 }}
               >
-                <Text style={styles.menuText}>Editar</Text>
+                <Text style={styles.menuText}>{i18n.t("edit")}</Text>
               </TouchableOpacity>
 
-              {/* SOLO CLIENTE → CREAR PEDIDO */}
               {user && role === "client" && (
                 <TouchableOpacity
                   style={styles.menuOption}
                   onPress={() => {
                     setShowMenu(false);
+
                     router.push({
                       pathname: "/createOrder",
                       params: { suitId: suit.id },
                     });
                   }}
                 >
-                  <Text style={styles.menuText}>Crear pedido</Text>
+                  <Text style={styles.menuText}>{i18n.t("create_order")}</Text>
                 </TouchableOpacity>
               )}
 
-              {/* GUARDAR EN NUBE / LOCAL → según corresponda */}
               {user && !isCloud && (
                 <TouchableOpacity
                   style={styles.menuOption}
@@ -315,9 +348,10 @@ export default function SuitCard({
                     handleSaveCloud();
                   }}
                 >
-                  <Text style={styles.menuText}>Guardar en la nube</Text>
+                  <Text style={styles.menuText}>{i18n.t("save_to_cloud")}</Text>
                 </TouchableOpacity>
               )}
+
               {user && isCloud && (
                 <TouchableOpacity
                   style={styles.menuOption}
@@ -326,11 +360,10 @@ export default function SuitCard({
                     handleSaveLocal();
                   }}
                 >
-                  <Text style={styles.menuText}>Guardar en local</Text>
+                  <Text style={styles.menuText}>{i18n.t("save_to_local")}</Text>
                 </TouchableOpacity>
               )}
 
-              {/* ELIMINAR → siempre disponible */}
               <TouchableOpacity
                 style={styles.menuOption}
                 onPress={() => {
@@ -339,17 +372,16 @@ export default function SuitCard({
                 }}
               >
                 <Text style={[styles.menuText, { color: "#D32F2F" }]}>
-                  Eliminar
+                  {i18n.t("delete")}
                 </Text>
               </TouchableOpacity>
 
-              {/* CERRAR */}
               <TouchableOpacity
                 style={[styles.menuOption, { marginTop: 10 }]}
                 onPress={() => setShowMenu(false)}
               >
                 <Text style={[styles.menuText, { textAlign: "center" }]}>
-                  Cerrar
+                  {i18n.t("close")}
                 </Text>
               </TouchableOpacity>
             </View>

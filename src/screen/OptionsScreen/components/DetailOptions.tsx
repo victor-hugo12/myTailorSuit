@@ -1,4 +1,4 @@
-// src/screens/OptionsScreen/components/DetailOptions.tsx
+// src/screen/OptionsScreen/components/DetailOptions.tsx
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
@@ -40,7 +40,7 @@ export default function DetailOptions({
   onSelectOption,
 }: DetailOptionsProps) {
   const [activeGroupLabel, setActiveGroupLabel] = useState(
-    currentOptionGroups[0]?.label || ""
+    currentOptionGroups[0]?.label || "",
   );
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function DetailOptions({
   }, [currentOptionGroups, activeGroupLabel]);
 
   const activeGroup = currentOptionGroups.find(
-    (g) => g.label === activeGroupLabel
+    (g) => g.label === activeGroupLabel,
   );
 
   const handleSelectOption = (optionId: string | number) => {
@@ -62,10 +62,8 @@ export default function DetailOptions({
     const numeric =
       typeof optionId === "string" ? parseInt(optionId, 10) : optionId;
 
-    // Disparar callback hacia OptionsScreen
     onSelectOption(activeGroup.label, numeric);
 
-    // Manejar vista posterior si corresponde
     const shouldShowBack = BACK_LABELS.includes(activeGroup.label);
     if (showBackView !== shouldShowBack) {
       setShowBackView(shouldShowBack);

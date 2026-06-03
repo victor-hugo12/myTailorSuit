@@ -11,6 +11,7 @@
     "invalid_email": "Email inválido",
     "required_email": "Email requerido",
     "required_password": "Contraseña requerida",
-    "google_login": "Continuar con Google"
+    "google_login": "Continuar con Google",
+    "invalid_credentials": "Credenciales incorrectas"
   }
 }

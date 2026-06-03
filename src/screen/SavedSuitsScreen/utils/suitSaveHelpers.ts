@@ -1,4 +1,4 @@
-import { SavedSuit } from "screen/OptionsScreen/types/suits";
+import { SavedSuit } from "@/screen/OptionsScreen/types/suits";
 import { saveSuitToCloud } from "@/storage/cloudUtils";
 import { saveSuit } from "@/storage/customSuit.storage";
 
@@ -14,7 +14,7 @@ export const handleSaveToLocal = async (suit: SavedSuit) => {
     const fileUri = FileSystem.documentDirectory + fileName;
     const downloadResult = await FileSystem.downloadAsync(
       suit.previewUri,
-      fileUri
+      fileUri,
     );
     localUri = downloadResult.uri;
   }
@@ -29,7 +29,7 @@ export const handleSaveToLocal = async (suit: SavedSuit) => {
 
 export const handleSaveToCloud = async (
   suit: SavedSuit,
-  ref?: React.RefObject<View>
+  ref?: React.RefObject<View>,
 ) => {
   if (!ref?.current) return;
   await saveSuitToCloud(suit, ref.current);

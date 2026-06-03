@@ -22,8 +22,16 @@
     "preview": "PREVIEW",
     "save_to_cloud": "Guardar en la Nube",
     "save_to_local": "Guardar Local",
+    "edit": "Editar",
+    "saving": "Guardando...",
     "image_load_error": "Error al cargar la imagen",
     "reload": "Recargar",
+    "search": "Buscar...",
+    "sort": "Ordenar",
+    "sort_az": "A-Z",
+    "sort_za": "Z-A",
+    "sort_date_asc": "↑ Fecha",
+    "sort_date_desc": "↓ Fecha",
     "refresh": "Actualizar"
   }
 }

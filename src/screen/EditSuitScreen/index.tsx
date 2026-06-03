@@ -14,7 +14,6 @@ import DetailOptions from "../OptionsScreen/components/DetailOptions";
 import MeasurementsPanel from "../OptionsScreen/components/MeasurementsPanel";
 import FabricsGrid from "../OptionsScreen/components/FabricsGrid";
 import ThemedSafeAreaView from "@/components/ThemedSafeAreaView";
-
 import { OPTIONS_BY_GARMENT } from "../OptionsScreen/constants";
 import i18n from "../../language";
 

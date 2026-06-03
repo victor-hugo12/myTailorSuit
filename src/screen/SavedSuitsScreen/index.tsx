@@ -1,4 +1,5 @@
 // src/screens/SavedSuitsScreen/index.tsx
+
 import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import {
@@ -24,12 +25,15 @@ import i18n from "@/language";
 import en from "./en.json";
 import es from "./es.json";
 
-i18n.store(en);
-i18n.store(es);
+import { useAppSelector } from "../../redux/hooks";
+import { selectLanguage } from "../../redux/selections/selections.selectors";
 
 // 🔹 React Native Firebase
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+
+i18n.store(en);
+i18n.store(es);
 
 interface SuitSavingState {
   isSaving: boolean;
@@ -37,6 +41,10 @@ interface SuitSavingState {
 }
 
 export default function SavedSuitsScreen() {
+  // Escucha cambios de idioma
+  const language = useAppSelector(selectLanguage);
+  i18n.locale = language;
+
   const [localSuits, setLocalSuits] = useState<SavedSuit[]>([]);
   const [cloudSuits, setCloudSuits] = useState<SavedSuit[]>([]);
   const [activeView, setActiveView] = useState<"local" | "cloud">("local");
@@ -72,6 +80,7 @@ export default function SavedSuitsScreen() {
       .collection("users")
       .doc(user.uid)
       .collection("suits");
+
     const snapshot = await suitsCol.get();
 
     const suits = snapshot.docs
@@ -88,19 +97,31 @@ export default function SavedSuitsScreen() {
   const handleSaveToLocal = async (suit: SavedSuit) => {
     setSavingStates((prev) => ({
       ...prev,
-      [suit.id]: { isSaving: true, savedSuccessfully: false },
+      [suit.id]: {
+        isSaving: true,
+        savedSuccessfully: false,
+      },
     }));
+
     try {
       await saveSuit(suit);
+
       setSavingStates((prev) => ({
         ...prev,
-        [suit.id]: { isSaving: false, savedSuccessfully: true },
+        [suit.id]: {
+          isSaving: false,
+          savedSuccessfully: true,
+        },
       }));
+
       await loadLocalSuits();
     } catch {
       setSavingStates((prev) => ({
         ...prev,
-        [suit.id]: { isSaving: false, savedSuccessfully: false },
+        [suit.id]: {
+          isSaving: false,
+          savedSuccessfully: false,
+        },
       }));
     }
   };
@@ -110,19 +131,31 @@ export default function SavedSuitsScreen() {
 
     setSavingStates((prev) => ({
       ...prev,
-      [suit.id]: { isSaving: true, savedSuccessfully: false },
+      [suit.id]: {
+        isSaving: true,
+        savedSuccessfully: false,
+      },
     }));
+
     try {
       await saveSuitToCloud(suit);
+
       setSavingStates((prev) => ({
         ...prev,
-        [suit.id]: { isSaving: false, savedSuccessfully: true },
+        [suit.id]: {
+          isSaving: false,
+          savedSuccessfully: true,
+        },
       }));
+
       await loadCloudSuits();
     } catch {
       setSavingStates((prev) => ({
         ...prev,
-        [suit.id]: { isSaving: false, savedSuccessfully: false },
+        [suit.id]: {
+          isSaving: false,
+          savedSuccessfully: false,
+        },
       }));
     }
   };
@@ -141,6 +174,7 @@ export default function SavedSuitsScreen() {
       .doc(user.uid)
       .collection("suits")
       .doc(suit.id);
+
     await suitDocRef.delete();
     await loadCloudSuits();
   };
@@ -152,7 +186,6 @@ export default function SavedSuitsScreen() {
       <ThemedSafeAreaView>
         <Header title={i18n.t("my_designs")} showBackButton />
 
-        {/* -------------------- SELECTOR DE VISTA -------------------- */}
         <View style={styles.viewSelector}>
           <Text
             style={[
@@ -163,6 +196,7 @@ export default function SavedSuitsScreen() {
           >
             {i18n.t("local")}
           </Text>
+
           {isLoggedIn && (
             <Text
               style={[
@@ -176,7 +210,6 @@ export default function SavedSuitsScreen() {
           )}
         </View>
 
-        {/* -------------------- SECCIÓN DE TRAJES -------------------- */}
         <SuitsSection
           title={
             activeView === "local"
@@ -196,33 +229,41 @@ export default function SavedSuitsScreen() {
           isLoggedIn={isLoggedIn}
         />
 
-        {/* -------------------- DIÁLOGO -------------------- */}
         <Portal>
           <Dialog
             visible={confirmVisible}
             onDismiss={() => setConfirmVisible(false)}
           >
-            <Dialog.Title>Confirmar eliminación</Dialog.Title>
+            <Dialog.Title>{i18n.t("delete_suit")}</Dialog.Title>
+
             <Dialog.Content>
               <Text>
-                ¿Deseas eliminar el traje{" "}
-                <Text style={{ fontWeight: "bold" }}>{suitToDelete?.name}</Text>
-                ?
+                {activeView === "local"
+                  ? i18n.t("confirm_delete_local")
+                  : i18n.t("confirm_delete_cloud")}
               </Text>
             </Dialog.Content>
+
             <Dialog.Actions>
-              <Button onPress={() => setConfirmVisible(false)}>Cancelar</Button>
+              <Button onPress={() => setConfirmVisible(false)}>
+                {i18n.t("cancel")}
+              </Button>
+
               <Button
                 onPress={async () => {
                   if (!suitToDelete) return;
-                  activeView === "local"
-                    ? await deleteLocalSuit(suitToDelete)
-                    : await deleteCloudSuit(suitToDelete);
+
+                  if (activeView === "local") {
+                    await deleteLocalSuit(suitToDelete);
+                  } else {
+                    await deleteCloudSuit(suitToDelete);
+                  }
+
                   setConfirmVisible(false);
                   setSuitToDelete(null);
                 }}
               >
-                Eliminar
+                {i18n.t("delete")}
               </Button>
             </Dialog.Actions>
           </Dialog>
@@ -239,6 +280,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     gap: 10,
   },
+
   viewButton: {
     paddingVertical: 6,
     paddingHorizontal: 16,
@@ -248,5 +290,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  viewButtonActive: { backgroundColor: "#0B214A" },
+
+  viewButtonActive: {
+    backgroundColor: "#0B214A",
+  },
 });

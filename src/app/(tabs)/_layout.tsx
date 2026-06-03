@@ -8,9 +8,16 @@ import { ActivityIndicator } from "react-native-paper";
 import { firebaseAuth } from "@/config/firebaseConfig";
 import i18n from "@/language";
 
+import { useAppSelector } from "@/redux/hooks";
+import { selectLanguage } from "@/redux/selections/selections.selectors";
+
 export default function TabsLayout() {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const language = useAppSelector(selectLanguage);
+
+  i18n.locale = language;
 
   useEffect(() => {
     const unsubscribe = firebaseAuth.onAuthStateChanged((usr) => {

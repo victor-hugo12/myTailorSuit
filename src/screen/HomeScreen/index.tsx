@@ -1,24 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
-  Alert,
   ScrollView,
 } from "react-native";
+
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+
 import {
   selectGarmentId,
   selectGarmentType,
   selectMeasurements,
   selectSelectedOptions,
   selectSelectedFabric,
+  selectLanguage,
 } from "../../redux/selections/selections.selectors";
+
 import { changeGarment } from "../../redux/selections/selections.actions";
 
 import en from "./en.json";
 import es from "./es.json";
+
 import Header from "@/components/Header";
 import ThemedSafeAreaView from "@/components/ThemedSafeAreaView";
 import OptionGroups from "@/components/OptionGroups";
@@ -33,6 +37,8 @@ i18n.store(es);
 export default function HomeScreen() {
   const dispatch = useAppDispatch();
   const router = useRouter();
+  const language = useAppSelector(selectLanguage);
+  i18n.locale = language;
 
   const garmentId = useAppSelector(selectGarmentId);
   const garmentType = useAppSelector(selectGarmentType);
@@ -41,6 +47,7 @@ export default function HomeScreen() {
   const selectedFabric = useAppSelector(selectSelectedFabric);
 
   const initialId = garmentId ?? GARMENT_OPTIONS[0].id;
+
   const [activeGroup, setActiveGroup] = useState<number>(initialId);
 
   const handleSelectGarment = (id: number) => {
@@ -78,7 +85,9 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={styles.navigateButton}
           onPress={() => {
-            if (garmentType) router.push("/options");
+            if (garmentType) {
+              router.push("/options");
+            }
           }}
         >
           <Text style={styles.navigateButtonText}>
@@ -100,6 +109,7 @@ export default function HomeScreen() {
               const option = GARMENT_OPTIONS.find(
                 (g) => String(g.id) === label,
               );
+
               return <Text>{option ? i18n.t(option.label) : label}</Text>;
             }}
           />
@@ -110,7 +120,10 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 5 },
+  container: {
+    padding: 5,
+  },
+
   navigateButton: {
     backgroundColor: "#4f46e5",
     padding: 12,
@@ -119,6 +132,15 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     marginHorizontal: 8,
   },
-  navigateButtonText: { color: "#fff", fontWeight: "bold", fontSize: 16 },
-  selectionContainer: { marginTop: 5, alignItems: "center" },
+
+  navigateButtonText: {
+    color: "#fff",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+
+  selectionContainer: {
+    marginTop: 5,
+    alignItems: "center",
+  },
 });

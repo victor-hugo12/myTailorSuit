@@ -43,7 +43,7 @@ export default function OrderCard({
 
   const status: OrderStatus = order.status;
   const color = ORDER_STATE_COLORS[status];
-  const label = ORDER_STATE_LABELS[status];
+  const label = i18n.t(ORDER_STATE_LABELS[status]);
   const suit = order.suit || {};
 
   const colors =
@@ -88,7 +88,7 @@ export default function OrderCard({
           const tempUri = `${FileSystem.cacheDirectory}${Date.now()}.png`;
           const downloadResult = await FileSystem.downloadAsync(
             previewUri,
-            tempUri
+            tempUri,
           );
           previewUri = await saveOrderPreviewToCloud({
             ...suitData,
@@ -322,8 +322,6 @@ export default function OrderCard({
           {i18n.t("view_technical_sheet")}
         </Text>
       </TouchableOpacity>
-
-      {/* MODAL DE SELECCIÓN */}
       <Modal visible={modalVisible} transparent animationType="fade">
         <View style={styles.modalOverlay}>
           <View style={[styles.modalBox, { backgroundColor: colors.card }]}>

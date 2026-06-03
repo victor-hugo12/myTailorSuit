@@ -1,4 +1,4 @@
-// src/screens/OptionsScreen/index.tsx
+// src/screen/OptionsScreen/index.tsx
 import React, { useState, useMemo, useRef, useEffect } from "react";
 import {
   View,

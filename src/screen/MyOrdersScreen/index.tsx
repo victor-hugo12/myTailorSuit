@@ -13,7 +13,10 @@ import OrderCard from "./components/OrderCard";
 import OrderFilter from "./components/OrderFilter";
 import { useRouter } from "expo-router";
 import { useAppSelector } from "../../redux/hooks";
-import { selectTheme } from "../../redux/selections/selections.selectors";
+import {
+  selectTheme,
+  selectLanguage,
+} from "../../redux/selections/selections.selectors";
 import i18n from "../../language";
 import en from "./en.json";
 import es from "./es.json";
@@ -26,6 +29,8 @@ i18n.store(es);
 export default function MyOrdersScreen() {
   const router = useRouter();
   const theme = useAppSelector(selectTheme);
+  const language = useAppSelector(selectLanguage);
+  i18n.locale = language;
 
   const colors =
     theme === "dark"
@@ -73,7 +78,6 @@ export default function MyOrdersScreen() {
   const [price, setPrice] = useState("");
   const [time, setTime] = useState("");
 
-  // ------------------ Cotización ------------------
   const openQuoteModal = (orderId: string) => {
     setCurrentOrderId(orderId);
     setQuoteVisible(true);
@@ -81,22 +85,25 @@ export default function MyOrdersScreen() {
 
   const submitQuoteModal = async () => {
     if (!currentOrderId) return;
+
     await submitQuote(currentOrderId, Number(price), Number(time));
+
     setQuoteVisible(false);
     setPrice("");
     setTime("");
   };
 
-  // ------------------ Render ------------------
-  if (loading)
+  if (loading) {
     return (
       <ThemedSafeAreaView style={{ backgroundColor: colors.background }}>
         <Header title={i18n.t("my_orders")} showBackButton />
+
         <View style={styles.center}>
           <ActivityIndicator size="large" color={colors.buttonBg} />
         </View>
       </ThemedSafeAreaView>
     );
+  }
 
   return (
     <ThemedSafeAreaView style={{ backgroundColor: colors.background }}>
@@ -138,9 +145,11 @@ export default function MyOrdersScreen() {
           )}
         />
       )}
+
       <Portal>
         <Dialog visible={quoteVisible} onDismiss={() => setQuoteVisible(false)}>
           <Dialog.Title>{i18n.t("create_quote")}</Dialog.Title>
+
           <Dialog.Content>
             <TextInput
               label={i18n.t("price")}
@@ -152,21 +161,27 @@ export default function MyOrdersScreen() {
               textColor={colors.text}
               placeholderTextColor={colors.placeholder}
             />
+
             <TextInput
               label={i18n.t("time_days")}
               value={time}
               onChangeText={setTime}
               keyboardType="numeric"
               mode="outlined"
-              style={{ backgroundColor: colors.inputBg, marginTop: 12 }}
+              style={{
+                backgroundColor: colors.inputBg,
+                marginTop: 12,
+              }}
               textColor={colors.text}
               placeholderTextColor={colors.placeholder}
             />
           </Dialog.Content>
+
           <Dialog.Actions>
             <Button onPress={() => setQuoteVisible(false)}>
               {i18n.t("cancel")}
             </Button>
+
             <Button onPress={submitQuoteModal}>{i18n.t("submit")}</Button>
           </Dialog.Actions>
         </Dialog>
@@ -176,5 +191,9 @@ export default function MyOrdersScreen() {
 }
 
 const styles = StyleSheet.create({
-  center: { flex: 1, justifyContent: "center", alignItems: "center" },
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });
